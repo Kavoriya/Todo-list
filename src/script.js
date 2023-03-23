@@ -1,9 +1,9 @@
-const Task = (title, description, dueDate, isImportant) => {
-   return { title, description, dueDate, isImportant };
+const Task = (title, note, dueDate, isImportant) => {
+   return { title, note, dueDate, isImportant };
 }
 
-const Project = (title, description, dueDate, isImportant, tasks) => {
-   const prototype = Task(title, description, dueDate, isImportant);
+const Project = (title, note, dueDate, isImportant, tasks) => {
+   const prototype = Task(title, note, dueDate, isImportant);
    return Object.assign({}, prototype, {tasks});
 }
 
