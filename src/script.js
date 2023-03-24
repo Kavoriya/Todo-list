@@ -3,7 +3,14 @@ const Task = (title, note, dueDate, isImportant, isDone) => {
       task.isDone = !task.isDone;
    }
 
-   let task = { title, note, dueDate, isImportant, isDone, toggleIsDone };
+   const editTask = (title, note, dueDate, isImportant) => {
+      task.title = title;
+      task.note = note;
+      task.dueDate = dueDate;
+      task.isImportant = isImportant;
+   }
+
+   let task = { title, note, dueDate, isImportant, isDone, toggleIsDone, editTask };
    return task;
 }
 
@@ -18,13 +25,23 @@ const List = (title, note, dueDate, isImportant, isDone, tasks) => {
       }
    }
 
+   const deleteTask = (task) => {
+      tasks.splice(tasks.indexOf(task), 1);
+   }
+
    const uncheckList = () => {
       tasks.forEach(task => {
          task.isDone = false;
       });
    }
 
-   return Object.assign({}, prototype, {tasks}, {addTask, uncheckList});
+   const clearList = () => {
+      tasks.forEach(task => {
+         tasks.shift();
+      });
+   }
+
+   return Object.assign({}, prototype, {tasks}, {addTask, deleteTask, uncheckList, clearList});
 }
 
 const defaultList = List('Todo List', '', '', false, false,
@@ -35,7 +52,7 @@ const defaultList = List('Todo List', '', '', false, false,
    ]
 );
 
-const homeWork = List('Finish assignment', 'I can do it', new Date('December 17, 1995 03:24:00'), true, false, 
+const todayList = List('Finish assignment', '', '', false, false, 
    [
    Task('do homework', '', new Date('December 16, 1995 16:54:00'), true, false), 
    Task('make presentation', '', new Date('December 15, 1995 15:05:00'), true, false)
