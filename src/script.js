@@ -59,8 +59,11 @@ const defaultList = List('Todo List', '', '', false, false,
 //    ]
 // );
 
-const ListsController = () => {
+const ListsController = (listsArray) => {
    const allLists = [];
+   listsArray.forEach(list => {
+      allLists.push(list);
+   });
 
    const addList = (list) => {
       if (list.title != '') {
