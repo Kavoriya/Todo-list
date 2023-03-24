@@ -52,12 +52,27 @@ const defaultList = List('Todo List', '', '', false, false,
    ]
 );
 
-const todayList = List('Finish assignment', '', '', false, false, 
-   [
-   Task('do homework', '', new Date('December 16, 1995 16:54:00'), true, false), 
-   Task('make presentation', '', new Date('December 15, 1995 15:05:00'), true, false)
-   ]
-);
+// const todayList = List('Finish assignment', '', '', false, false, 
+//    [
+//    Task('do homework', '', new Date('December 16, 1995 16:54:00'), true, false), 
+//    Task('make presentation', '', new Date('December 15, 1995 15:05:00'), true, false)
+//    ]
+// );
 
+const ListsController = () => {
+   const allLists = [];
 
+   const addList = (list) => {
+      if (list.title != '') {
+         allLists.push(list);
+      } else {
+         console.log("Error! Empty title!");
+      }
+   }
 
+   const removeList = (list) => {
+      allLists.splice(allLists.indexOf(list), 1);
+   }
+
+   return { addList, removeList, allLists };
+}
