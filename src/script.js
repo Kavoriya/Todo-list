@@ -52,14 +52,14 @@ const defaultList = List('Todo List', '', '', false, false,
    ]
 );
 
-// const todayList = List('Finish assignment', '', '', false, false, 
-//    [
-//    Task('do homework', '', new Date('December 16, 1995 16:54:00'), true, false), 
-//    Task('make presentation', '', new Date('December 15, 1995 15:05:00'), true, false)
-//    ]
-// );
+const todayList = List('Assignment', '', '', false, false, 
+   [
+   Task('do homework', '', new Date('December 16, 1995 16:54:00'), true, false), 
+   Task('make presentation', '', new Date('December 15, 1995 15:05:00'), true, false)
+   ]
+);
 
-const ListsController = (listsArray) => {
+const ListsController = (listsArray = []) => {
    const allLists = [];
    listsArray.forEach(list => {
       allLists.push(list);
@@ -79,3 +79,50 @@ const ListsController = (listsArray) => {
 
    return { addList, removeList, allLists };
 }
+
+const AppController = () => {
+   const app = ListsController([defaultList, todayList]);
+
+   const sidebar = document.getElementById('sidebar');
+   const listContent = document.getElementById('listContent');
+
+   const loadList = (i) => {
+      listContent.textContent = '';
+      const header = document.createElement('h2');
+      header.textContent = app.allLists[i].title;
+      const tasks = app.allLists[i].tasks;
+      tasks.forEach(task => {
+         const li = document.createElement('li');
+         li.classList.add('task');
+         const checkbox = document.createElement('input');
+         checkbox.setAttribute('type', 'checkbox');
+         const date = document.createElement('span');
+         if (task.dueDate != '') { 
+            let dayAndMonth = `${task.dueDate.getDate()}. ${task.dueDate.getMonth()}`;
+            date.textContent = dayAndMonth;
+         }
+         const title = document.createElement('h3');
+         title.textContent = task.title;
+
+         li.append(checkbox, date, title);
+         listContent.prepend(header);
+         listContent.append(li);
+      })
+   }
+
+   const updateSidebar = () => {
+      sidebar.textContent = '';
+      for (let i = 0; i < app.allLists.length; i++) {
+         const li = document.createElement('li');
+         li.addEventListener('click', () => {
+            loadList(i);
+         });
+         li.textContent = app.allLists[i].title;
+         sidebar.append(li);
+      }
+   }
+
+   updateSidebar();
+}
+
+AppController();
