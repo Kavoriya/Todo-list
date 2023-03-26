@@ -12,16 +12,23 @@
    <main id="app">
       <div id="sidebar"></div>
       <div id="listContent">
-         <h2>Todo List</h2>
-         <li class="task">
-            <div class="task-main">
-               <input type="checkbox" name="checked" id="checked">
-               <span>March 23</span>
-               <h3>Clean dishes</h3>
-               <span>note</span>
-            </div>
-            <p class="note">Some very important description.</p>
-         </li>
+         <div class="list-header">
+            <h2>Todo List</h2>
+         </div>
+         <div class="listTasks">
+            <li class="task">
+               <div class="task-main">
+                  <input type="checkbox" name="checked" id="checked">
+                  <span>March 23</span>
+                  <h3>Clean dishes</h3>
+                  <span>note</span>
+               </div>
+               <p class="note">Some very important description.</p>
+            </li>
+         </div>
+         <div class="controls">     
+            <button type="button" class="new-task">New task</button>  
+         </div>
       </div>
    </main>
 </body>
