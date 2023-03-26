@@ -96,15 +96,19 @@ const AppController = () => {
          li.classList.add('task');
          const checkbox = document.createElement('input');
          checkbox.setAttribute('type', 'checkbox');
-         const date = document.createElement('span');
+         li.appendChild(checkbox);
+
          if (task.dueDate != '') { 
+            const date = document.createElement('span');
             let dayAndMonth = `${task.dueDate.getDate()}. ${task.dueDate.getMonth()}`;
             date.textContent = dayAndMonth;
+            li.appendChild(date);
          }
+
          const title = document.createElement('h3');
          title.textContent = task.title;
-
-         li.append(checkbox, date, title);
+         li.appendChild(title);
+         
          listContent.prepend(header);
          listContent.append(li);
       })
