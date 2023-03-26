@@ -21,6 +21,18 @@ html {
 }
 
 .task {
+   list-style: none;
+}
+
+.task-main {
    display: flex;
    align-items: center;
+}
+
+.task-main .task-expanded {
+   background-color: beige;
+}
+
+.task .note {
+   margin: 5px;
 }

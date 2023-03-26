@@ -91,25 +91,49 @@ const AppController = () => {
       const header = document.createElement('h2');
       header.textContent = app.allLists[i].title;
       const tasks = app.allLists[i].tasks;
+
       tasks.forEach(task => {
          const li = document.createElement('li');
          li.classList.add('task');
+         const taskMain = document.createElement('div');
+         taskMain.classList.add('task-main');
+
          const checkbox = document.createElement('input');
          checkbox.setAttribute('type', 'checkbox');
-         li.appendChild(checkbox);
+         if (task.isDone) {
+            checkbox.checked = true;
+         }
+         taskMain.appendChild(checkbox);
 
          if (task.dueDate != '') { 
             const date = document.createElement('span');
             let dayAndMonth = `${task.dueDate.getDate()}. ${task.dueDate.getMonth()}`;
             date.textContent = dayAndMonth;
-            li.appendChild(date);
+            taskMain.appendChild(date);
+         }
+
+         if (task.isImportant) {
+            const importantIcon = document.createElement('span');
+            importantIcon.textContent = 'star';
+            taskMain.appendChild(importantIcon);
          }
 
          const title = document.createElement('h3');
          title.textContent = task.title;
-         li.appendChild(title);
-         
+         taskMain.appendChild(title);
+
+         if (task.note != '') {
+            const noteIcon = document.createElement('span');
+            noteIcon.textContent = 'note';
+            noteIcon.addEventListener('click', () => {
+               handleClickOnNoteIcon(li, task);
+            })
+            taskMain.appendChild(noteIcon);
+         }
+
          listContent.prepend(header);
+
+         li.append(taskMain);
          listContent.append(li);
       })
    }
@@ -124,6 +148,18 @@ const AppController = () => {
          li.textContent = app.allLists[i].title;
          sidebar.append(li);
       }
+   }
+
+   const handleClickOnNoteIcon = (li, task) => {
+      const element = li.querySelector('.note');
+      if (task.note != '' && !element) {
+         const note = document.createElement('p');
+         note.classList.add('note');
+         note.textContent = task.note;
+         li.appendChild(note);
+      } else if (element) {
+         element.remove();
+      }   
    }
 
    updateSidebar();
