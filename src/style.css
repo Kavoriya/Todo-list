@@ -13,6 +13,8 @@ html {
 }
 
 #listContent {
+   display: grid;
+   grid-template-rows: 100px 1fr 50px;
    border: 1px solid black;
 }
 

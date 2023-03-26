@@ -86,11 +86,18 @@ const AppController = () => {
    const sidebar = document.getElementById('sidebar');
    const listContent = document.getElementById('listContent');
 
-   const loadList = (i) => {
+   const loadListContent = (i) => {
       listContent.textContent = '';
-      const header = document.createElement('h2');
-      header.textContent = app.allLists[i].title;
+
+      const listHeader = document.createElement('div');
+      listHeader.classList.add('list-header');
+      const listTitle = document.createElement('h2');
+      listTitle.textContent = app.allLists[i].title;
+      listHeader.append(listTitle);
+
       const tasks = app.allLists[i].tasks;
+      const listTasks = document.createElement('div');
+      listTasks.classList.add('listTasks');
 
       tasks.forEach(task => {
          const li = document.createElement('li');
@@ -131,11 +138,26 @@ const AppController = () => {
             taskMain.appendChild(noteIcon);
          }
 
-         listContent.prepend(header);
+         listContent.prepend(listHeader);
 
          li.append(taskMain);
-         listContent.append(li);
+         listTasks.append(li);
       })
+
+      listContent.append(listTasks);
+
+      loadControls();
+   }
+
+   const loadControls = () => {
+      const controls = document.createElement('div');
+      controls.classList.add('controls');
+      const newTaskButton = document.createElement('button');
+      newTaskButton.classList.add('new-task');
+      newTaskButton.setAttribute('type', 'button');
+      newTaskButton.textContent = 'New Task';
+      controls.append(newTaskButton);
+      listContent.append(controls);
    }
 
    const updateSidebar = () => {
@@ -143,7 +165,7 @@ const AppController = () => {
       for (let i = 0; i < app.allLists.length; i++) {
          const li = document.createElement('li');
          li.addEventListener('click', () => {
-            loadList(i);
+            loadListContent(i);
          });
          li.textContent = app.allLists[i].title;
          sidebar.append(li);
