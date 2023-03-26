@@ -86,16 +86,16 @@ const AppController = () => {
    const sidebar = document.getElementById('sidebar');
    const listContent = document.getElementById('listContent');
 
-   const loadListContent = (i) => {
+   const loadListContent = (listIndex) => {
       listContent.textContent = '';
 
       const listHeader = document.createElement('div');
       listHeader.classList.add('list-header');
       const listTitle = document.createElement('h2');
-      listTitle.textContent = app.allLists[i].title;
+      listTitle.textContent = app.allLists[listIndex].title;
       listHeader.append(listTitle);
 
-      const tasks = app.allLists[i].tasks;
+      const tasks = app.allLists[listIndex].tasks;
       const listTasks = document.createElement('div');
       listTasks.classList.add('listTasks');
 
@@ -146,16 +146,21 @@ const AppController = () => {
 
       listContent.append(listTasks);
 
-      loadControls();
+      loadControls(listIndex);
    }
 
-   const loadControls = () => {
+   const loadControls = (listIndex) => {
       const controls = document.createElement('div');
       controls.classList.add('controls');
+
       const newTaskButton = document.createElement('button');
       newTaskButton.classList.add('new-task');
       newTaskButton.setAttribute('type', 'button');
       newTaskButton.textContent = 'New Task';
+      newTaskButton.addEventListener('click', () => {
+         createFormForNewTask(listIndex)
+      });
+
       controls.append(newTaskButton);
       listContent.append(controls);
    }
@@ -184,6 +189,88 @@ const AppController = () => {
       }   
    }
 
+   const createFormForNewTask = (listIndex) => {
+      if (document.getElementById('addTaskForm')) {
+         return;
+      }
+      const addTaskForm = document.createElement('div');
+      addTaskForm.setAttribute('id', 'addTaskForm');
+      const form = document.createElement('form');
+      const ul = document.createElement('ul');
+      for (let i = 0; i < 4; i++) {
+         const li = document.createElement('li');
+         const label = document.createElement('label');
+         const input = document.createElement('input');
+         switch (i) {
+            case 0: 
+               label.textContent = 'Task';
+               label.setAttribute('for', 'title');
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', 'title');
+               break;
+            case 1:
+               label.textContent = 'Due date';
+               label.setAttribute('for', 'date');
+               input.setAttribute('type', 'date');
+               input.setAttribute('id', 'date');
+               break;
+            case 2:
+               label.textContent = 'Note';
+               label.setAttribute('for', 'note');
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', 'note');
+               break;
+            case 3:
+               label.textContent = 'Important';
+               label.setAttribute('for', 'isImportant');
+               input.setAttribute('type', 'checkbox');
+               input.setAttribute('id', 'isImportant');
+               break;
+         }
+         li.append(label, input);
+         ul.append(li);
+         
+      }
+      form.append(ul);
+      
+      const cancelTaskButton = document.createElement('button');
+      cancelTaskButton.setAttribute('id', 'cancel-task');
+      cancelTaskButton.setAttribute('type', 'button');
+      cancelTaskButton.textContent = 'Cancel';
+      cancelTaskButton.addEventListener('click', () => {
+         document.getElementById('addTaskForm').remove();
+      })
+
+      const submitTaskButton = document.createElement('button');
+      submitTaskButton.setAttribute('id', 'submit-task');
+      submitTaskButton.setAttribute('type', 'button');
+      submitTaskButton.textContent = 'Submit';
+      submitTaskButton.addEventListener('click', () => {
+         const title = document.getElementById('title').value;
+         const date = document.getElementById('date').value;
+         let dueDate;
+         if (date != '') {
+            dueDate = new Date(date);
+         } else {
+            dueDate = '';
+         }
+      
+         const note = document.getElementById('note').value;
+         const isImportant = document.getElementById('isImportant').checked;
+         console.log('title:' + title);
+         console.log('date:' + date);
+         console.log('dueDate:' + dueDate);
+         console.log('note:' + note);
+         console.log('isImportant:' + isImportant);
+         app.allLists[listIndex].addTask(Task(title, note, dueDate, isImportant, false));
+         loadListContent(listIndex);
+         
+      })
+
+      form.append(cancelTaskButton, submitTaskButton);
+      addTaskForm.append(form);
+      listContent.append(addTaskForm);
+   }
    updateSidebar();
 }
 

@@ -16,6 +16,7 @@ html {
    display: grid;
    grid-template-rows: 100px 1fr 50px;
    border: 1px solid black;
+   position: relative;
 }
 
 #listContent h2 {
@@ -37,4 +38,10 @@ html {
 
 .task .note {
    margin: 5px;
+}
+
+#addTaskForm {
+   position: absolute;
+   bottom: 50px;
+   background-color: antiquewhite;
 }
