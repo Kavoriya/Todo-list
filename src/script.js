@@ -114,7 +114,8 @@ const AppController = () => {
 
          if (task.dueDate != '') { 
             const date = document.createElement('span');
-            let dayAndMonth = `${task.dueDate.getDate()}. ${task.dueDate.getMonth()}`;
+            let dayAndMonth = 
+            `${task.dueDate.getDate()}. ${task.dueDate.toLocaleString('default', {month: 'short'})}`;
             date.textContent = dayAndMonth;
             taskMain.appendChild(date);
          }
