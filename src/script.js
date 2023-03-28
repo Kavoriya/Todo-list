@@ -46,8 +46,8 @@ const List = (title, note, dueDate, isImportant, isDone, tasks) => {
 
 const defaultList = List('Todo List', '', '', false, false,
    [
-   Task('Clean dishes', 'Using Fairy!', new Date('March 23, 2023'), false, false),
-   Task('Check emails', '', new Date('March 24 2023'), false, false),
+   Task('Clean dishes', 'Using Fairy!', new Date('March 22, 2023 11:00:00'), false, false),
+   Task('Check emails', '', new Date('March 24, 2023 11:00:00'), false, false),
    Task('Pet Lyolik', '', '', true, true),
    ]
 );
@@ -129,6 +129,9 @@ const AppController = () => {
 
          const title = document.createElement('h3');
          title.textContent = task.title;
+         title.addEventListener('click', () => {
+            createFormForEditingTask(listIndex, task);
+         })
          taskMain.appendChild(title);
 
          if (task.note != '') {
@@ -211,9 +214,7 @@ const AppController = () => {
    }
 
    const createFormForNewTask = (listIndex) => {
-      if (document.getElementById('addTaskForm')) {
-         return;
-      }
+      closeAllForms();
       const addTaskForm = document.createElement('div');
       addTaskForm.setAttribute('id', 'addTaskForm');
       const form = document.createElement('form');
@@ -294,9 +295,7 @@ const AppController = () => {
    }
 
    const createFormForNewList = () => {
-      if (document.getElementById('addListForm')) {
-         return;
-      }
+      closeAllForms();
       const addListForm = document.createElement('div');
       addListForm.setAttribute('id', 'addListForm');
       const form = document.createElement('form');
@@ -375,6 +374,103 @@ const AppController = () => {
       form.append(cancelListButton, submitListButton);
       addListForm.append(form);
       sidebar.append(addListForm);
+   }
+
+   const createFormForEditingTask = (listIndex, task) => {
+      closeAllForms();
+      const editTaskForm = document.createElement('div');
+      editTaskForm.setAttribute('id', 'editTaskForm');
+      const form = document.createElement('form');
+      const ul = document.createElement('ul');
+      for (let i = 0; i < 4; i++) {
+         const li = document.createElement('li');
+         const label = document.createElement('label');
+         const input = document.createElement('input');
+         switch (i) {
+            case 0: 
+               label.textContent = 'Task';
+               label.setAttribute('for', 'editTitle');
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', 'editTitle');
+               input.value = task.title;
+               break;
+            case 1:
+               label.textContent = 'Due date';
+               label.setAttribute('for', 'editDate');
+               input.setAttribute('type', 'date');
+               input.setAttribute('id', 'editDate');
+               if (task.dueDate != '') input.valueAsDate = task.dueDate;    
+               break;
+            case 2:
+               label.textContent = 'Note';
+               label.setAttribute('for', 'editNote');
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', 'editNote');
+               input.value = task.note;
+               break;
+            case 3:
+               label.textContent = 'Important';
+               label.setAttribute('for', 'editIsImportant');
+               input.setAttribute('type', 'checkbox');
+               input.setAttribute('id', 'editIsImportant');
+               input.checked = task.isImportant;
+               break;
+         }
+         li.append(label, input);
+         ul.append(li);
+         
+      }
+      form.append(ul);
+      
+      const cancelTaskButton = document.createElement('button');
+      cancelTaskButton.setAttribute('id', 'cancel-task');
+      cancelTaskButton.setAttribute('type', 'button');
+      cancelTaskButton.textContent = 'Cancel';
+      cancelTaskButton.addEventListener('click', () => {
+         document.getElementById('editTaskForm').remove();
+      })
+
+      const submitTaskButton = document.createElement('button');
+      submitTaskButton.setAttribute('id', 'submit-task');
+      submitTaskButton.setAttribute('type', 'button');
+      submitTaskButton.textContent = 'Submit';
+      submitTaskButton.addEventListener('click', () => {
+         const title = document.getElementById('editTitle').value;
+         const date = document.getElementById('editDate').value;
+         let dueDate;
+         if (date != '') {
+            dueDate = new Date(date);
+         } else {
+            dueDate = '';
+         }
+      
+         const note = document.getElementById('editNote').value;
+         const isImportant = document.getElementById('editIsImportant').checked;
+         console.log('title:' + title);
+         console.log('date:' + date);
+         console.log('dueDate:' + dueDate);
+         console.log('note:' + note);
+         console.log('isImportant:' + isImportant);
+         task.editTask(title, note, dueDate, isImportant);
+         loadListContent(listIndex);
+         
+      })
+
+      form.append(cancelTaskButton, submitTaskButton);
+      editTaskForm.append(form);
+      listContent.append(editTaskForm);
+   }
+
+   const closeAllForms = () => {
+      if (document.getElementById('addTaskForm')) {
+         document.getElementById('addTaskForm').remove();
+      }
+      if (document.getElementById('editTaskForm')) {
+         document.getElementById('editTaskForm').remove();
+      }
+      if (document.getElementById('addListForm')) {
+         document.getElementById('addListForm').remove();
+      }
    }
 
    updateSidebar();
