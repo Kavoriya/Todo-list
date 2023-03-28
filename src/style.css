@@ -9,6 +9,7 @@ html {
 }
 
 #sidebar {
+   position: relative;
    border: 1px solid black;
 }
 
@@ -40,7 +41,7 @@ html {
    margin: 5px;
 }
 
-#addTaskForm {
+#addTaskForm, #addListForm {
    position: absolute;
    bottom: 50px;
    background-color: antiquewhite;

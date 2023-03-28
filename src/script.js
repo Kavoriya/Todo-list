@@ -139,18 +139,17 @@ const AppController = () => {
             taskMain.appendChild(noteIcon);
          }
 
-         listContent.prepend(listHeader);
-
          li.append(taskMain);
          listTasks.append(li);
       })
 
+      listContent.prepend(listHeader);
       listContent.append(listTasks);
 
-      loadControls(listIndex);
+      loadControlsforListContent(listIndex);
    }
 
-   const loadControls = (listIndex) => {
+   const loadControlsforListContent = (listIndex) => {
       const controls = document.createElement('div');
       controls.classList.add('controls');
 
@@ -166,6 +165,22 @@ const AppController = () => {
       listContent.append(controls);
    }
 
+   const loadControlsforSidebar = () => {
+      const controls = document.createElement('div');
+      controls.classList.add('controls');
+
+      const newListButton = document.createElement('button');
+      newListButton.classList.add('new-task');
+      newListButton.setAttribute('type', 'button');
+      newListButton.textContent = 'New List';
+      newListButton.addEventListener('click', () => {
+         createFormForNewList();
+      })
+
+      controls.append(newListButton);
+      sidebar.append(controls);
+   }
+
    const updateSidebar = () => {
       sidebar.textContent = '';
       for (let i = 0; i < app.allLists.length; i++) {
@@ -176,6 +191,7 @@ const AppController = () => {
          li.textContent = app.allLists[i].title;
          sidebar.append(li);
       }
+      loadControlsforSidebar();
    }
 
    const handleClickOnNoteIcon = (li, task) => {
@@ -272,6 +288,91 @@ const AppController = () => {
       addTaskForm.append(form);
       listContent.append(addTaskForm);
    }
+
+   const createFormForNewList = () => {
+      if (document.getElementById('addListForm')) {
+         return;
+      }
+      const addListForm = document.createElement('div');
+      addListForm.setAttribute('id', 'addListForm');
+      const form = document.createElement('form');
+      const ul = document.createElement('ul');
+      for (let i = 0; i < 4; i++) {
+         const li = document.createElement('li');
+         const label = document.createElement('label');
+         const input = document.createElement('input');
+         switch (i) {
+            case 0: 
+               label.textContent = 'Task';
+               label.setAttribute('for', 'listTitle');
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', 'listTitle');
+               break;
+            case 1:
+               label.textContent = 'Due date';
+               label.setAttribute('for', 'listDate');
+               input.setAttribute('type', 'date');
+               input.setAttribute('id', 'listDate');
+               break;
+            case 2:
+               label.textContent = 'Note';
+               label.setAttribute('for', 'listNote');
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', 'listNote');
+               break;
+            case 3:
+               label.textContent = 'Important';
+               label.setAttribute('for', 'listIsImportant');
+               input.setAttribute('type', 'checkbox');
+               input.setAttribute('id', 'listIsImportant');
+               break;
+         }
+         li.append(label, input);
+         ul.append(li);
+         
+      }
+      form.append(ul);
+      
+      const cancelListButton = document.createElement('button');
+      cancelListButton.setAttribute('id', 'cancel-task');
+      cancelListButton.setAttribute('type', 'button');
+      cancelListButton.textContent = 'Cancel';
+      cancelListButton.addEventListener('click', () => {
+         document.getElementById('addListForm').remove();
+      })
+
+      const submitListButton = document.createElement('button');
+      submitListButton.setAttribute('id', 'submit-task');
+      submitListButton.setAttribute('type', 'button');
+      submitListButton.textContent = 'Submit';
+      submitListButton.addEventListener('click', () => {
+         const title = document.getElementById('listTitle').value;
+         const date = document.getElementById('listDate').value;
+         let dueDate;
+         if (date != '') {
+            dueDate = new Date(date);
+         } else {
+            dueDate = '';
+         }
+      
+         const note = document.getElementById('listNote').value;
+         const isImportant = document.getElementById('listIsImportant').checked;
+         console.log('title:' + title);
+         console.log('date:' + date);
+         console.log('dueDate:' + dueDate);
+         console.log('note:' + note);
+         console.log('isImportant:' + isImportant);
+         app.addList(List(title, note, dueDate, isImportant, false, []));
+         loadListContent(app.allLists.length - 1);
+         updateSidebar();
+         
+      })
+
+      form.append(cancelListButton, submitListButton);
+      addListForm.append(form);
+      sidebar.append(addListForm);
+   }
+
    updateSidebar();
 }
 
