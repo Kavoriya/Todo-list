@@ -95,10 +95,10 @@ const AppController = () => {
       listTitle.textContent = app.allLists[listIndex].title;
       listHeader.append(listTitle);
 
-      const tasks = app.allLists[listIndex].tasks;
       const listTasks = document.createElement('div');
       listTasks.classList.add('listTasks');
-
+      const tasks = app.allLists[listIndex].tasks;
+      
       tasks.forEach(task => {
          const li = document.createElement('li');
          li.classList.add('task');
@@ -183,14 +183,17 @@ const AppController = () => {
 
    const updateSidebar = () => {
       sidebar.textContent = '';
-      for (let i = 0; i < app.allLists.length; i++) {
+      const lists = document.createElement('div');
+      lists.classList.add('lists');
+      app.allLists.forEach(list => {
          const li = document.createElement('li');
          li.addEventListener('click', () => {
-            loadListContent(i);
+            loadListContent(app.allLists.indexOf(list));
          });
-         li.textContent = app.allLists[i].title;
-         sidebar.append(li);
-      }
+         li.textContent = list.title;
+         lists.append(li);
+      })
+      sidebar.append(lists);
       loadControlsforSidebar();
    }
 
