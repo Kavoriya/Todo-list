@@ -110,6 +110,7 @@ const AppController = () => {
          if (task.isDone) {
             checkbox.checked = true;
          }
+         checkbox.addEventListener('click', task.toggleIsDone);
          taskMain.appendChild(checkbox);
 
          if (task.dueDate != '') { 
