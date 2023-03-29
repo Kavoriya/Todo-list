@@ -443,7 +443,6 @@ const AppController = () => {
          } else {
             dueDate = '';
          }
-      
          const note = document.getElementById('editNote').value;
          const isImportant = document.getElementById('editIsImportant').checked;
          console.log('title:' + title);
@@ -452,11 +451,19 @@ const AppController = () => {
          console.log('note:' + note);
          console.log('isImportant:' + isImportant);
          task.editTask(title, note, dueDate, isImportant);
-         loadListContent(listIndex);
-         
+         loadListContent(listIndex);    
       })
 
-      form.append(cancelTaskButton, submitTaskButton);
+      const deleteTaskButton = document.createElement('button');
+      deleteTaskButton.setAttribute('id', 'delete-task');
+      deleteTaskButton.setAttribute('type', 'button');
+      deleteTaskButton.textContent = 'Delete';
+      deleteTaskButton.addEventListener('click', () => {
+         app.allLists[listIndex].deleteTask(task);
+         loadListContent(listIndex); 
+      })
+
+      form.append(cancelTaskButton, submitTaskButton, deleteTaskButton);
       editTaskForm.append(form);
       listContent.append(editTaskForm);
    }
