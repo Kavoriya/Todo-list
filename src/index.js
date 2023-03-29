@@ -68,6 +68,7 @@ const AppController = () => {
          taskMain.classList.add('task-main');
 
          const checkbox = document.createElement('input');
+         checkbox.classList.add('task-checkbox');
          checkbox.setAttribute('type', 'checkbox');
          if (task.isDone) {
             checkbox.checked = true;
@@ -105,6 +106,7 @@ const AppController = () => {
 
          const title = document.createElement('h3');
          title.textContent = task.title;
+         title.classList.add('task-title');
          title.addEventListener('click', () => {
             createFormForEditingTask(listIndex, task);
          })
@@ -112,7 +114,8 @@ const AppController = () => {
 
          if (task.note != '') {
             const noteIcon = document.createElement('span');
-            noteIcon.textContent = 'note';
+            noteIcon.classList.add('material-icons', 'task-note');
+            noteIcon.textContent = 'description';
             noteIcon.addEventListener('click', () => {
                handleClickOnNoteIcon(li, task);
             })
@@ -160,7 +163,7 @@ const AppController = () => {
       controls.classList.add('controls');
 
       const newListButton = document.createElement('button');
-      newListButton.setAttribute('id', 'newList');
+      newListButton.setAttribute('id', 'newListButton');
       newListButton.setAttribute('type', 'button');
       newListButton.textContent = 'New List';
       newListButton.addEventListener('click', () => {
@@ -212,7 +215,7 @@ const AppController = () => {
          const input = document.createElement('input');
          switch (i) {
             case 0: 
-               label.textContent = 'Task';
+               label.textContent = 'Name';
                label.setAttribute('for', 'title');
                input.setAttribute('type', 'text');
                input.setAttribute('id', 'title');
@@ -293,7 +296,7 @@ const AppController = () => {
          const input = document.createElement('input');
          switch (i) {
             case 0: 
-               label.textContent = 'Task';
+               label.textContent = 'Name';
                label.setAttribute('for', 'listTitle');
                input.setAttribute('type', 'text');
                input.setAttribute('id', 'listTitle');
@@ -376,7 +379,7 @@ const AppController = () => {
          const input = document.createElement('input');
          switch (i) {
             case 0: 
-               label.textContent = 'Task';
+               label.textContent = 'Name';
                label.setAttribute('for', 'editTitle');
                input.setAttribute('type', 'text');
                input.setAttribute('id', 'editTitle');
@@ -470,6 +473,7 @@ const AppController = () => {
    }
 
    updateSidebar();
+   loadListContent(0);
 }
 
 AppController();
