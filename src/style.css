@@ -79,15 +79,18 @@ html {
    text-align: center;
    background-color: #e2e8f0;
    border-radius: 8px;
+   cursor: pointer;
 }
 
 .task-star {
    justify-self: center;
    color: gold;
+   cursor: pointer;
 }
 
 .task-main > h3 {
    grid-column: 4/5;
+   cursor: pointer;
 }
 
 .task-main-dateless.task-main > h3 {

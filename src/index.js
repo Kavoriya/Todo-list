@@ -85,6 +85,9 @@ const AppController = () => {
             let dayAndMonth = 
             `${task.dueDate.getDate()}. ${task.dueDate.toLocaleString('default', {month: 'short'})}`;
             date.textContent = dayAndMonth;
+            date.addEventListener('click', () => {
+               createFormForEditingTask(listIndex, task);
+            })
             taskMain.appendChild(date);
          } else {
             taskMain.classList.add('task-main-dateless')
@@ -94,6 +97,9 @@ const AppController = () => {
             const importantIcon = document.createElement('span');
             importantIcon.classList.add('material-icons', 'task-star');
             importantIcon.textContent = 'star';
+            importantIcon.addEventListener('click', () => {
+               createFormForEditingTask(listIndex, task);
+            })
             taskMain.appendChild(importantIcon);
          }
 
