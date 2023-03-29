@@ -17,10 +17,16 @@ const AppController = () => {
       lists.forEach(list => {
          const properTasks = [];
          list.tasks.forEach(task => {
+            let fixedDate = '';
+            if (task.dueDate) {
+               fixedDate = new Date(task.dueDate);
+            } else {
+               fixedDate = '';
+            }
             properTasks.push(Task(
                task.title, 
                task.note, 
-               new Date(task.dueDate), 
+               fixedDate, 
                task.isImportant, 
                task.isDone));
          })
@@ -52,7 +58,7 @@ const AppController = () => {
       listHeader.append(listTitle);
 
       const listTasks = document.createElement('div');
-      listTasks.classList.add('listTasks');
+      listTasks.classList.add('list-tasks');
       const tasks = app.allLists[listIndex].tasks;
       
       tasks.forEach(task => {
@@ -72,16 +78,21 @@ const AppController = () => {
          });
          taskMain.appendChild(checkbox);
 
-         if (task.dueDate != '') { 
+         if (task.dueDate) { 
+            console.log(task.dueDate);
             const date = document.createElement('span');
+            date.classList.add('task-date');
             let dayAndMonth = 
             `${task.dueDate.getDate()}. ${task.dueDate.toLocaleString('default', {month: 'short'})}`;
             date.textContent = dayAndMonth;
             taskMain.appendChild(date);
+         } else {
+            taskMain.classList.add('task-main-dateless')
          }
 
          if (task.isImportant) {
             const importantIcon = document.createElement('span');
+            importantIcon.classList.add('material-icons', 'task-star');
             importantIcon.textContent = 'star';
             taskMain.appendChild(importantIcon);
          }
@@ -370,7 +381,7 @@ const AppController = () => {
                label.setAttribute('for', 'editDate');
                input.setAttribute('type', 'date');
                input.setAttribute('id', 'editDate');
-               if (task.dueDate != '') input.valueAsDate = task.dueDate;    
+               if (task.dueDate) input.valueAsDate = task.dueDate;    
                break;
             case 2:
                label.textContent = 'Note';
@@ -409,7 +420,7 @@ const AppController = () => {
          const title = document.getElementById('editTitle').value;
          const date = document.getElementById('editDate').value;
          let dueDate;
-         if (date != '') {
+         if (date) {
             dueDate = new Date(date);
          } else {
             dueDate = '';

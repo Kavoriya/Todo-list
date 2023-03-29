@@ -1,11 +1,13 @@
 html {
-   font-size: 20px;
+   font-size: 24px;
 }
 
 #app {
+   width: 1000px;
+   height: 600px;
+   margin: 0 auto;
    display: grid;
-   grid-template-columns: 1fr 1fr;
-   height: 500px;
+   grid-template-columns: 300px 1fr;
 }
 
 #sidebar {
@@ -13,6 +15,21 @@ html {
    grid-template-rows: 1fr 50px;
    position: relative;
    border: 1px solid black;
+}
+
+.lists {
+   list-style: none;
+   display: grid;
+   grid-auto-rows: 60px;
+}
+
+.lists > li {
+   cursor: pointer;
+   padding: 16px;
+}
+
+.lists > li:hover {
+   background-color: #e0f2fe;
 }
 
 #listContent {
@@ -26,13 +43,55 @@ html {
    text-align: center;
 }
 
+.list-tasks {
+   display: flex;
+   flex-direction: column;
+   row-gap: 20px;
+   padding: 20px;
+}
+
 .task {
+   height: 40px;
    list-style: none;
 }
 
 .task-main {
-   display: flex;
+   display: grid;
+   grid-template-columns: 30px 100px 25px min-content 30px;
+   grid-template-rows: 40px;
+   column-gap: 6px;
+   justify-items: center;
    align-items: center;
+   height: inherit;
+}
+
+.task-main-dateless.task-main {
+   grid-template-columns: 30px 25px min-content 30px;
+}
+
+.task-main > input {
+   height: 20px;
+   width: 20px;
+}
+
+.task-date {
+   width: 90px;
+   text-align: center;
+   background-color: #e2e8f0;
+   border-radius: 8px;
+}
+
+.task-star {
+   justify-self: center;
+   color: gold;
+}
+
+.task-main > h3 {
+   grid-column: 4/5;
+}
+
+.task-main-dateless.task-main > h3 {
+   grid-column: 3/4;
 }
 
 .task-main .task-expanded {
