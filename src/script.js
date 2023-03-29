@@ -288,8 +288,8 @@ const AppController = () => {
          loadListContent(listIndex);
          
       })
-
-      form.append(cancelTaskButton, submitTaskButton);
+      addTaskForm.append(cancelTaskButton);
+      form.append(submitTaskButton);
       addTaskForm.append(form);
       listContent.append(addTaskForm);
    }
@@ -371,7 +371,8 @@ const AppController = () => {
          
       })
 
-      form.append(cancelListButton, submitListButton);
+      addListForm.append(cancelListButton);
+      form.append(submitListButton);
       addListForm.append(form);
       sidebar.append(addListForm);
    }
@@ -463,7 +464,8 @@ const AppController = () => {
          loadListContent(listIndex); 
       })
 
-      form.append(cancelTaskButton, submitTaskButton, deleteTaskButton);
+      editTaskForm.append(cancelTaskButton);
+      form.append(submitTaskButton, deleteTaskButton);
       editTaskForm.append(form);
       listContent.append(editTaskForm);
    }
