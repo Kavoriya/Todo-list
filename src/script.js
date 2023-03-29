@@ -158,14 +158,24 @@ const AppController = () => {
       controls.classList.add('controls');
 
       const newTaskButton = document.createElement('button');
-      newTaskButton.classList.add('new-task');
+      newTaskButton.setAttribute('id', 'newTaskButton');
       newTaskButton.setAttribute('type', 'button');
       newTaskButton.textContent = 'New Task';
       newTaskButton.addEventListener('click', () => {
          createFormForNewTask(listIndex)
       });
 
-      controls.append(newTaskButton);
+      const deleteListButton = document.createElement('button');
+      deleteListButton.setAttribute('id', 'deleteListButton');
+      deleteListButton.setAttribute('type', 'button');
+      deleteListButton.textContent = 'Delete List';
+      deleteListButton.addEventListener('click', () => {
+         app.allLists.splice(listIndex, 1);
+         listContent.textContent = '';
+         updateSidebar();
+      })
+
+      controls.append(newTaskButton, deleteListButton);
       listContent.append(controls);
    }
 
@@ -174,7 +184,7 @@ const AppController = () => {
       controls.classList.add('controls');
 
       const newListButton = document.createElement('button');
-      newListButton.classList.add('new-task');
+      newListButton.setAttribute('id', 'newList');
       newListButton.setAttribute('type', 'button');
       newListButton.textContent = 'New List';
       newListButton.addEventListener('click', () => {
