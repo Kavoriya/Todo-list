@@ -465,7 +465,7 @@ const AppController = () => {
       })
 
       editTaskForm.append(cancelTaskButton);
-      form.append(submitTaskButton, deleteTaskButton);
+      form.append(deleteTaskButton, submitTaskButton);
       editTaskForm.append(form);
       listContent.append(editTaskForm);
    }
