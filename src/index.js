@@ -5,12 +5,44 @@ import { ListsController } from "./listsController.js";
 
 
 const AppController = () => {
-   const app = ListsController([defaultList, todayList]);
+   const getListsFromStorage = () => {
+      const lists = JSON.parse(localStorage.getItem('allLists'));
+      console.log(lists);
+      if (!lists || !lists.length) {
+         return [List(
+            'Todo List', '', '', false, false, []
+         )];
+      }
+      let properLists = [];
+      lists.forEach(list => {
+         const properTasks = [];
+         list.tasks.forEach(task => {
+            properTasks.push(Task(
+               task.title, 
+               task.note, 
+               new Date(task.dueDate), 
+               task.isImportant, 
+               task.isDone));
+         })
+         properLists.
+         push(List(
+            list.title, 
+            list.note, 
+            new Date(list.dueDate), 
+            list.isImportant, 
+            list.isDone, 
+            properTasks));
+      })
+      return(properLists);
+   }
+
+   const app = ListsController(getListsFromStorage());
 
    const sidebar = document.getElementById('sidebar');
    const listContent = document.getElementById('listContent');
 
    const loadListContent = (listIndex) => {
+      window.localStorage.setItem('allLists', JSON.stringify(app.allLists));
       listContent.textContent = '';
 
       const listHeader = document.createElement('div');
@@ -34,7 +66,10 @@ const AppController = () => {
          if (task.isDone) {
             checkbox.checked = true;
          }
-         checkbox.addEventListener('click', task.toggleIsDone);
+         checkbox.addEventListener('click', () => {
+            task.toggleIsDone();
+            loadListContent(listIndex);
+         });
          taskMain.appendChild(checkbox);
 
          if (task.dueDate != '') { 
@@ -120,6 +155,7 @@ const AppController = () => {
    }
 
    const updateSidebar = () => {
+      window.localStorage.setItem('allLists', JSON.stringify(app.allLists));
       sidebar.textContent = '';
       const lists = document.createElement('div');
       lists.classList.add('lists');
