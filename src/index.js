@@ -138,6 +138,7 @@ const AppController = () => {
 
       const newTaskButton = document.createElement('button');
       newTaskButton.setAttribute('id', 'newTaskButton');
+      newTaskButton.classList.add('controls-button');
       newTaskButton.setAttribute('type', 'button');
       newTaskButton.textContent = 'New Task';
       newTaskButton.addEventListener('click', () => {
@@ -146,6 +147,7 @@ const AppController = () => {
 
       const deleteListButton = document.createElement('button');
       deleteListButton.setAttribute('id', 'deleteListButton');
+      deleteListButton.classList.add('controls-button');
       deleteListButton.setAttribute('type', 'button');
       deleteListButton.textContent = 'Delete List';
       deleteListButton.addEventListener('click', () => {
@@ -164,6 +166,7 @@ const AppController = () => {
 
       const newListButton = document.createElement('button');
       newListButton.setAttribute('id', 'newListButton');
+      newListButton.classList.add('controls-button');
       newListButton.setAttribute('type', 'button');
       newListButton.textContent = 'New List';
       newListButton.addEventListener('click', () => {
@@ -207,6 +210,7 @@ const AppController = () => {
       closeAllForms();
       const addTaskForm = document.createElement('div');
       addTaskForm.setAttribute('id', 'addTaskForm');
+      addTaskForm.classList.add('form');
       const form = document.createElement('form');
       const ul = document.createElement('ul');
       for (let i = 0; i < 4; i++) {
@@ -244,11 +248,15 @@ const AppController = () => {
          
       }
       form.append(ul);
-      
+
       const cancelTaskButton = document.createElement('button');
       cancelTaskButton.setAttribute('id', 'cancel-task');
       cancelTaskButton.setAttribute('type', 'button');
-      cancelTaskButton.textContent = 'Cancel';
+      cancelTaskButton.classList.add('close-button');
+      const cancelSpan = document.createElement('span');
+      cancelSpan.classList.add('material-icons', 'md-36');
+      cancelSpan.textContent = 'close';
+      cancelTaskButton.append(cancelSpan);
       cancelTaskButton.addEventListener('click', () => {
          document.getElementById('addTaskForm').remove();
       })
@@ -288,9 +296,10 @@ const AppController = () => {
       closeAllForms();
       const addListForm = document.createElement('div');
       addListForm.setAttribute('id', 'addListForm');
+      addListForm.classList.add('form');
       const form = document.createElement('form');
       const ul = document.createElement('ul');
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 1; i++) {
          const li = document.createElement('li');
          const label = document.createElement('label');
          const input = document.createElement('input');
@@ -329,7 +338,11 @@ const AppController = () => {
       const cancelListButton = document.createElement('button');
       cancelListButton.setAttribute('id', 'cancel-task');
       cancelListButton.setAttribute('type', 'button');
-      cancelListButton.textContent = 'Cancel';
+      cancelListButton.classList.add('close-button');
+      const cancelSpan = document.createElement('span');
+      cancelSpan.classList.add('material-icons', 'md-36');
+      cancelSpan.textContent = 'close';
+      cancelListButton.append(cancelSpan);
       cancelListButton.addEventListener('click', () => {
          document.getElementById('addListForm').remove();
       })
@@ -340,22 +353,22 @@ const AppController = () => {
       submitListButton.textContent = 'Submit';
       submitListButton.addEventListener('click', () => {
          const title = document.getElementById('listTitle').value;
-         const date = document.getElementById('listDate').value;
-         let dueDate;
-         if (date != '') {
-            dueDate = new Date(date);
-         } else {
-            dueDate = '';
-         }
+         // const date = document.getElementById('listDate').value;
+         // let dueDate;
+         // if (date != '') {
+         //    dueDate = new Date(date);
+         // } else {
+         //    dueDate = '';
+         // }
       
-         const note = document.getElementById('listNote').value;
-         const isImportant = document.getElementById('listIsImportant').checked;
+         // const note = document.getElementById('listNote').value;
+         // const isImportant = document.getElementById('listIsImportant').checked;
          console.log('title:' + title);
-         console.log('date:' + date);
-         console.log('dueDate:' + dueDate);
-         console.log('note:' + note);
-         console.log('isImportant:' + isImportant);
-         app.addList(List(title, note, dueDate, isImportant, false, []));
+         // console.log('date:' + date);
+         // console.log('dueDate:' + dueDate);
+         // console.log('note:' + note);
+         // console.log('isImportant:' + isImportant);
+         app.addList(List(title, '', '', false, false, []));
          loadListContent(app.allLists.length - 1);
          updateSidebar();
          
@@ -371,6 +384,7 @@ const AppController = () => {
       closeAllForms();
       const editTaskForm = document.createElement('div');
       editTaskForm.setAttribute('id', 'editTaskForm');
+      editTaskForm.classList.add('form');
       const form = document.createElement('form');
       const ul = document.createElement('ul');
       for (let i = 0; i < 4; i++) {
@@ -416,10 +430,17 @@ const AppController = () => {
       const cancelTaskButton = document.createElement('button');
       cancelTaskButton.setAttribute('id', 'cancel-task');
       cancelTaskButton.setAttribute('type', 'button');
-      cancelTaskButton.textContent = 'Cancel';
+      cancelTaskButton.classList.add('close-button');
+      const cancelSpan = document.createElement('span');
+      cancelSpan.classList.add('material-icons', 'md-36');
+      cancelSpan.textContent = 'close';
+      cancelTaskButton.append(cancelSpan);
       cancelTaskButton.addEventListener('click', () => {
          document.getElementById('editTaskForm').remove();
       })
+
+      const formButtons = document.createElement('div');
+      formButtons.classList.add('form-buttons');
 
       const submitTaskButton = document.createElement('button');
       submitTaskButton.setAttribute('id', 'submit-task');
@@ -454,9 +475,11 @@ const AppController = () => {
          loadListContent(listIndex); 
       })
 
+      formButtons.append(submitTaskButton, deleteTaskButton);
+
       editTaskForm.append(cancelTaskButton);
-      form.append(deleteTaskButton, submitTaskButton);
       editTaskForm.append(form);
+      editTaskForm.append(formButtons);
       listContent.append(editTaskForm);
    }
 
