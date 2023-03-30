@@ -1,7 +1,7 @@
 import { Task } from "./task.js";
 import { List } from "./list.js";
-import { defaultList, todayList } from "./defaultLists.js";
 import { ListsController } from "./listsController.js";
+import './style.css';
 
 
 const AppController = () => {
