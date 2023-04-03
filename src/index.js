@@ -87,7 +87,7 @@ const AppController = () => {
             `${task.dueDate.getDate()}. ${task.dueDate.toLocaleString('default', {month: 'short'})}`;
             date.textContent = dayAndMonth;
             date.addEventListener('click', () => {
-               createFormForEditingTask(listIndex, task);
+               createFormForTask('editTaskForm', listIndex, task);
             })
             taskMain.appendChild(date);
          } else {
@@ -99,7 +99,7 @@ const AppController = () => {
             importantIcon.classList.add('material-icons', 'task-star');
             importantIcon.textContent = 'star';
             importantIcon.addEventListener('click', () => {
-               createFormForEditingTask(listIndex, task);
+               createFormForTask('editTaskForm', listIndex, task);
             })
             taskMain.appendChild(importantIcon);
          }
@@ -108,7 +108,7 @@ const AppController = () => {
          title.textContent = task.title;
          title.classList.add('task-title');
          title.addEventListener('click', () => {
-            createFormForEditingTask(listIndex, task);
+            createFormForTask('editTaskForm', listIndex, task);
          })
          taskMain.appendChild(title);
 
@@ -132,6 +132,18 @@ const AppController = () => {
       loadControlsforListContent(listIndex);
    }
 
+   const handleClickOnNoteIcon = (li, task) => {
+      const element = li.querySelector('.note');
+      if (task.note != '' && !element) {
+         const note = document.createElement('p');
+         note.classList.add('note');
+         note.textContent = task.note;
+         li.appendChild(note);
+      } else if (element) {
+         element.remove();
+      }   
+   }
+
    const loadControlsforListContent = (listIndex) => {
       const controls = createControlsDiv();
       controls.append
@@ -140,12 +152,6 @@ const AppController = () => {
          createDeleteListButton(listIndex)
       );
       listContent.append(controls);
-   }
-
-   const loadControlsforSidebar = () => {
-      const controls = createControlsDiv();
-      controls.append(createNewListButton());
-      sidebar.append(controls);
    }
 
    const updateSidebar = () => {
@@ -165,102 +171,55 @@ const AppController = () => {
       loadControlsforSidebar();
    }
 
-   const handleClickOnNoteIcon = (li, task) => {
-      const element = li.querySelector('.note');
-      if (task.note != '' && !element) {
-         const note = document.createElement('p');
-         note.classList.add('note');
-         note.textContent = task.note;
-         li.appendChild(note);
-      } else if (element) {
-         element.remove();
-      }   
+   const loadControlsforSidebar = () => {
+      const controls = createControlsDiv();
+      controls.append(createNewListButton());
+      sidebar.append(controls);
    }
 
-   const createFormForNewTask = (listIndex) => {
-      closeAllForms();
-      const addTaskForm = document.createElement('div');
-      addTaskForm.setAttribute('id', 'addTaskForm');
-      addTaskForm.classList.add('form');
-      const form = document.createElement('form');
-      const ul = document.createElement('ul');
-      for (let i = 0; i < 4; i++) {
-         const li = document.createElement('li');
-         const label = document.createElement('label');
-         const input = document.createElement('input');
-         switch (i) {
-            case 0: 
-               label.textContent = 'Name';
-               label.setAttribute('for', 'title');
-               input.setAttribute('type', 'text');
-               input.setAttribute('id', 'title');
-               break;
-            case 1:
-               label.textContent = 'Due date';
-               label.setAttribute('for', 'date');
-               input.setAttribute('type', 'date');
-               input.setAttribute('id', 'date');
-               break;
-            case 2:
-               label.textContent = 'Note';
-               label.setAttribute('for', 'note');
-               input.setAttribute('type', 'text');
-               input.setAttribute('id', 'note');
-               break;
-            case 3:
-               label.textContent = 'Important';
-               label.setAttribute('for', 'isImportant');
-               input.setAttribute('type', 'checkbox');
-               input.setAttribute('id', 'isImportant');
-               break;
-         }
-         li.append(label, input);
-         ul.append(li);
-         
-      }
-      form.append(ul);
+   const createControlsDiv = () => {
+      const controls = document.createElement('div');
+      controls.classList.add('controls');
+      return controls;
+   }
 
-      const cancelTaskButton = document.createElement('button');
-      cancelTaskButton.setAttribute('id', 'cancel-task');
-      cancelTaskButton.setAttribute('type', 'button');
-      cancelTaskButton.classList.add('close-button');
-      const cancelSpan = document.createElement('span');
-      cancelSpan.classList.add('material-icons', 'md-36');
-      cancelSpan.textContent = 'close';
-      cancelTaskButton.append(cancelSpan);
-      cancelTaskButton.addEventListener('click', () => {
-         document.getElementById('addTaskForm').remove();
-      })
+   const createNewTaskButton = (listIndex) => {
+      const newTaskButton = document.createElement('button');
+      newTaskButton.setAttribute('id', 'newTaskButton');
+      newTaskButton.classList.add('controls-button');
+      newTaskButton.setAttribute('type', 'button');
+      newTaskButton.textContent = 'New Task';
+      newTaskButton.addEventListener('click', () => {
+         // createFormForNewTask(listIndex)
+         createFormForTask('addTaskForm', listIndex);
+      });
+      return newTaskButton;
+   }
 
-      const submitTaskButton = document.createElement('button');
-      submitTaskButton.setAttribute('id', 'submit-task');
-      submitTaskButton.setAttribute('type', 'button');
-      submitTaskButton.textContent = 'Submit';
-      submitTaskButton.addEventListener('click', () => {
-         const title = document.getElementById('title').value;
-         const date = document.getElementById('date').value;
-         let dueDate;
-         if (date != '') {
-            dueDate = new Date(date);
-         } else {
-            dueDate = '';
-         }
-      
-         const note = document.getElementById('note').value;
-         const isImportant = document.getElementById('isImportant').checked;
-         console.log('title:' + title);
-         console.log('date:' + date);
-         console.log('dueDate:' + dueDate);
-         console.log('note:' + note);
-         console.log('isImportant:' + isImportant);
-         app.allLists[listIndex].addTask(Task(title, note, dueDate, isImportant, false));
-         loadListContent(listIndex);
-         
+   const createNewListButton = () => {
+      const newListButton = document.createElement('button');
+      newListButton.setAttribute('id', 'newListButton');
+      newListButton.classList.add('controls-button');
+      newListButton.setAttribute('type', 'button');
+      newListButton.textContent = 'New List';
+      newListButton.addEventListener('click', () => {
+         createFormForNewList();
       })
-      addTaskForm.append(cancelTaskButton);
-      form.append(submitTaskButton);
-      addTaskForm.append(form);
-      listContent.append(addTaskForm);
+      return newListButton;
+   }
+
+   const createDeleteListButton = (listIndex) => {
+      const deleteListButton = document.createElement('button');
+      deleteListButton.setAttribute('id', 'deleteListButton');
+      deleteListButton.classList.add('controls-button');
+      deleteListButton.setAttribute('type', 'button');
+      deleteListButton.textContent = 'Delete List';
+      deleteListButton.addEventListener('click', () => {
+         app.removeList(app.allLists[listIndex]);
+         listContent.textContent = '';
+         updateSidebar();
+      });
+      return deleteListButton;
    }
 
    const createFormForNewList = () => {
@@ -317,7 +276,7 @@ const AppController = () => {
       cancelListButton.addEventListener('click', () => {
          document.getElementById('addListForm').remove();
       })
-
+   
       const submitListButton = document.createElement('button');
       submitListButton.setAttribute('id', 'submit-task');
       submitListButton.setAttribute('type', 'button');
@@ -344,60 +303,14 @@ const AppController = () => {
          updateSidebar();
          
       })
-
+   
       addListForm.append(cancelListButton);
       form.append(submitListButton);
       addListForm.append(form);
       sidebar.append(addListForm);
    }
-
-   const createFormForEditingTask = (listIndex, task) => {
-      closeAllForms();
-      const editTaskForm = document.createElement('div');
-      editTaskForm.setAttribute('id', 'editTaskForm');
-      editTaskForm.classList.add('form');
-      const form = document.createElement('form');
-      const ul = document.createElement('ul');
-      for (let i = 0; i < 4; i++) {
-         const li = document.createElement('li');
-         const label = document.createElement('label');
-         const input = document.createElement('input');
-         switch (i) {
-            case 0: 
-               label.textContent = 'Name';
-               label.setAttribute('for', 'editTitle');
-               input.setAttribute('type', 'text');
-               input.setAttribute('id', 'editTitle');
-               input.value = task.title;
-               break;
-            case 1:
-               label.textContent = 'Due date';
-               label.setAttribute('for', 'editDate');
-               input.setAttribute('type', 'date');
-               input.setAttribute('id', 'editDate');
-               if (task.dueDate) input.valueAsDate = task.dueDate;    
-               break;
-            case 2:
-               label.textContent = 'Note';
-               label.setAttribute('for', 'editNote');
-               input.setAttribute('type', 'text');
-               input.setAttribute('id', 'editNote');
-               input.value = task.note;
-               break;
-            case 3:
-               label.textContent = 'Important';
-               label.setAttribute('for', 'editIsImportant');
-               input.setAttribute('type', 'checkbox');
-               input.setAttribute('id', 'editIsImportant');
-               input.checked = task.isImportant;
-               break;
-         }
-         li.append(label, input);
-         ul.append(li);
-         
-      }
-      form.append(ul);
-      
+   
+   const createCancelButton = (formId) => {
       const cancelTaskButton = document.createElement('button');
       cancelTaskButton.setAttribute('id', 'cancel-task');
       cancelTaskButton.setAttribute('type', 'button');
@@ -407,36 +320,45 @@ const AppController = () => {
       cancelSpan.textContent = 'close';
       cancelTaskButton.append(cancelSpan);
       cancelTaskButton.addEventListener('click', () => {
-         document.getElementById('editTaskForm').remove();
+         document.getElementById(formId).remove();
       })
-
-      const formButtons = document.createElement('div');
-      formButtons.classList.add('form-buttons');
-
+      return cancelTaskButton;
+   }
+   
+   const createSubmitTaskButton = (formId, listIndex, task) => {
       const submitTaskButton = document.createElement('button');
       submitTaskButton.setAttribute('id', 'submit-task');
       submitTaskButton.setAttribute('type', 'button');
       submitTaskButton.textContent = 'Submit';
       submitTaskButton.addEventListener('click', () => {
-         const title = document.getElementById('editTitle').value;
-         const date = document.getElementById('editDate').value;
+         console.log(`${formId}Title`);
+         const title = document.getElementById(`${formId}Title`).value;
+         const date = document.getElementById(`${formId}DueDate`).value;
          let dueDate;
          if (date) {
             dueDate = new Date(date);
          } else {
             dueDate = '';
          }
-         const note = document.getElementById('editNote').value;
-         const isImportant = document.getElementById('editIsImportant').checked;
+         const note = document.getElementById(`${formId}Note`).value;
+         const isImportant = document.getElementById(`${formId}IsImportant`).checked;
          console.log('title:' + title);
          console.log('date:' + date);
          console.log('dueDate:' + dueDate);
          console.log('note:' + note);
          console.log('isImportant:' + isImportant);
-         task.editTask(title, note, dueDate, isImportant);
-         loadListContent(listIndex);    
-      })
-
+         if (!task) {
+            app.allLists[listIndex].addTask(Task(title, note, dueDate, isImportant, false));
+         } else {
+            task.editTask(title, note, dueDate, isImportant);
+         }
+         loadListContent(listIndex);   
+      });
+   
+      return submitTaskButton;
+   }
+   
+   const createDeleteTaskButton = (listIndex, task) => {
       const deleteTaskButton = document.createElement('button');
       deleteTaskButton.setAttribute('id', 'delete-task');
       deleteTaskButton.setAttribute('type', 'button');
@@ -445,15 +367,72 @@ const AppController = () => {
          app.allLists[listIndex].deleteTask(task);
          loadListContent(listIndex); 
       })
-
-      formButtons.append(submitTaskButton, deleteTaskButton);
-
-      editTaskForm.append(cancelTaskButton);
-      editTaskForm.append(form);
-      editTaskForm.append(formButtons);
-      listContent.append(editTaskForm);
+      return deleteTaskButton;
    }
-
+   
+   const createFormForTask = (formId, listIndex, task) => {
+      closeAllForms();
+      const taskForm = document.createElement('div');
+      taskForm.setAttribute('id', formId);
+      taskForm.classList.add('form');
+      const form = document.createElement('form');
+      const ul = document.createElement('ul');
+   
+      for (let i = 0; i < 4; i++) {
+         const li = document.createElement('li');
+         const label = document.createElement('label');
+         const input = document.createElement('input');
+         switch (i) {
+            case 0: 
+               label.textContent = 'Name';
+               label.setAttribute('for', `${formId}Title`);
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', `${formId}Title`);
+               if (task) input.value = task.title;
+               break;
+            case 1:
+               label.textContent = 'Due date';
+               label.setAttribute('for', `${formId}DueDate`);
+               input.setAttribute('type', 'date');
+               input.setAttribute('id', `${formId}DueDate`);
+               if (task) {
+                  if (task.dueDate) input.valueAsDate = task.dueDate; 
+               }  
+               break;
+            case 2:
+               label.textContent = 'Note';
+               label.setAttribute('for', `${formId}Note`);
+               input.setAttribute('type', 'text');
+               input.setAttribute('id', `${formId}Note`);
+               if (task) input.value = task.note;
+               break;
+            case 3:
+               label.textContent = 'Important';
+               label.setAttribute('for', `${formId}IsImportant`);
+               input.setAttribute('type', 'checkbox');
+               input.setAttribute('id', `${formId}IsImportant`);
+               if (task) input.checked = task.isImportant;
+               break;
+         }
+         li.append(label, input);
+         ul.append(li);
+      }
+   
+      form.append(ul);
+   
+      const formButtons = document.createElement('div');
+      formButtons.classList.add('form-buttons');
+      if (task) {
+         formButtons.append(createDeleteTaskButton(listIndex, task));
+      }
+      formButtons.append(createSubmitTaskButton(formId, listIndex, task));
+   
+      taskForm.append(createCancelButton(formId));
+      taskForm.append(form);
+      taskForm.append(formButtons);
+      listContent.append(taskForm);
+   }
+   
    const closeAllForms = () => {
       if (document.getElementById('addTaskForm')) {
          document.getElementById('addTaskForm').remove();
@@ -464,50 +443,6 @@ const AppController = () => {
       if (document.getElementById('addListForm')) {
          document.getElementById('addListForm').remove();
       }
-   }
-
-   const createControlsDiv = () => {
-      const controls = document.createElement('div');
-      controls.classList.add('controls');
-      return controls;
-   }
-
-   const createNewTaskButton = (listIndex) => {
-      const newTaskButton = document.createElement('button');
-      newTaskButton.setAttribute('id', 'newTaskButton');
-      newTaskButton.classList.add('controls-button');
-      newTaskButton.setAttribute('type', 'button');
-      newTaskButton.textContent = 'New Task';
-      newTaskButton.addEventListener('click', () => {
-         createFormForNewTask(listIndex)
-      });
-      return newTaskButton;
-   }
-
-   const createNewListButton = () => {
-      const newListButton = document.createElement('button');
-      newListButton.setAttribute('id', 'newListButton');
-      newListButton.classList.add('controls-button');
-      newListButton.setAttribute('type', 'button');
-      newListButton.textContent = 'New List';
-      newListButton.addEventListener('click', () => {
-         createFormForNewList();
-      })
-      return newListButton;
-   }
-
-   const createDeleteListButton = (listIndex) => {
-      const deleteListButton = document.createElement('button');
-      deleteListButton.setAttribute('id', 'deleteListButton');
-      deleteListButton.classList.add('controls-button');
-      deleteListButton.setAttribute('type', 'button');
-      deleteListButton.textContent = 'Delete List';
-      deleteListButton.addEventListener('click', () => {
-         app.removeList(app.allLists[listIndex]);
-         listContent.textContent = '';
-         updateSidebar();
-      });
-      return deleteListButton;
    }
 
    updateSidebar();
