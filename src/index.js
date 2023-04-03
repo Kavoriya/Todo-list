@@ -1,7 +1,7 @@
 import { Task } from "./task.js";
 import { List } from "./list.js";
 import { ListsController } from "./listsController.js";
-import './style.css';
+// import './style.css';
 
 
 const AppController = () => {
@@ -133,47 +133,18 @@ const AppController = () => {
    }
 
    const loadControlsforListContent = (listIndex) => {
-      const controls = document.createElement('div');
-      controls.classList.add('controls');
-
-      const newTaskButton = document.createElement('button');
-      newTaskButton.setAttribute('id', 'newTaskButton');
-      newTaskButton.classList.add('controls-button');
-      newTaskButton.setAttribute('type', 'button');
-      newTaskButton.textContent = 'New Task';
-      newTaskButton.addEventListener('click', () => {
-         createFormForNewTask(listIndex)
-      });
-
-      const deleteListButton = document.createElement('button');
-      deleteListButton.setAttribute('id', 'deleteListButton');
-      deleteListButton.classList.add('controls-button');
-      deleteListButton.setAttribute('type', 'button');
-      deleteListButton.textContent = 'Delete List';
-      deleteListButton.addEventListener('click', () => {
-         app.removeList(app.allLists[listIndex]);
-         listContent.textContent = '';
-         updateSidebar();
-      })
-
-      controls.append(newTaskButton, deleteListButton);
+      const controls = createControlsDiv();
+      controls.append
+      (
+         createNewTaskButton(listIndex), 
+         createDeleteListButton(listIndex)
+      );
       listContent.append(controls);
    }
 
    const loadControlsforSidebar = () => {
-      const controls = document.createElement('div');
-      controls.classList.add('controls');
-
-      const newListButton = document.createElement('button');
-      newListButton.setAttribute('id', 'newListButton');
-      newListButton.classList.add('controls-button');
-      newListButton.setAttribute('type', 'button');
-      newListButton.textContent = 'New List';
-      newListButton.addEventListener('click', () => {
-         createFormForNewList();
-      })
-
-      controls.append(newListButton);
+      const controls = createControlsDiv();
+      controls.append(createNewListButton());
       sidebar.append(controls);
    }
 
@@ -493,6 +464,50 @@ const AppController = () => {
       if (document.getElementById('addListForm')) {
          document.getElementById('addListForm').remove();
       }
+   }
+
+   const createControlsDiv = () => {
+      const controls = document.createElement('div');
+      controls.classList.add('controls');
+      return controls;
+   }
+
+   const createNewTaskButton = (listIndex) => {
+      const newTaskButton = document.createElement('button');
+      newTaskButton.setAttribute('id', 'newTaskButton');
+      newTaskButton.classList.add('controls-button');
+      newTaskButton.setAttribute('type', 'button');
+      newTaskButton.textContent = 'New Task';
+      newTaskButton.addEventListener('click', () => {
+         createFormForNewTask(listIndex)
+      });
+      return newTaskButton;
+   }
+
+   const createNewListButton = () => {
+      const newListButton = document.createElement('button');
+      newListButton.setAttribute('id', 'newListButton');
+      newListButton.classList.add('controls-button');
+      newListButton.setAttribute('type', 'button');
+      newListButton.textContent = 'New List';
+      newListButton.addEventListener('click', () => {
+         createFormForNewList();
+      })
+      return newListButton;
+   }
+
+   const createDeleteListButton = (listIndex) => {
+      const deleteListButton = document.createElement('button');
+      deleteListButton.setAttribute('id', 'deleteListButton');
+      deleteListButton.classList.add('controls-button');
+      deleteListButton.setAttribute('type', 'button');
+      deleteListButton.textContent = 'Delete List';
+      deleteListButton.addEventListener('click', () => {
+         app.removeList(app.allLists[listIndex]);
+         listContent.textContent = '';
+         updateSidebar();
+      });
+      return deleteListButton;
    }
 
    updateSidebar();
