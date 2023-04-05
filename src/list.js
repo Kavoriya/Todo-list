@@ -1,6 +1,6 @@
 import { Task } from './task.js';
 
-export const List = (title, note, dueDate, isImportant, isDone, tasks) => {
+export const List = (title, note, isDone, tasks) => {
    const prototype = Task(title, note, dueDate, isImportant, isDone);
 
    const addTask = (task) => {
@@ -22,9 +22,7 @@ export const List = (title, note, dueDate, isImportant, isDone, tasks) => {
    }
 
    const clearList = () => {
-      tasks.forEach(task => {
-         tasks.shift();
-      });
+      tasks = [];
    }
 
    return Object.assign({}, prototype, {tasks}, {addTask, deleteTask, uncheckList, clearList});
