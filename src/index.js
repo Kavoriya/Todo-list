@@ -122,7 +122,15 @@ const AppController = () => {
             taskMain.appendChild(noteIcon);
          }
 
-         li.append(taskMain);
+         const deleteTaskButton = createDeleteTaskButton(listIndex, task);
+         deleteTaskButton.textContent = '';
+         const deleteTaskButtonSpan = document.createElement('span');
+         deleteTaskButtonSpan.classList.add('material-icons', 'md-36');
+         deleteTaskButtonSpan.textContent = 'delete';
+         deleteTaskButton.append(deleteTaskButtonSpan);
+         
+
+         li.append(taskMain, deleteTaskButton);
          listTasks.append(li);
       })
 
@@ -312,7 +320,7 @@ const AppController = () => {
    
    const createCancelButton = (formId) => {
       const cancelTaskButton = document.createElement('button');
-      cancelTaskButton.setAttribute('id', 'cancel-task');
+      // cancelTaskButton.setAttribute('id', 'cancel-task');
       cancelTaskButton.setAttribute('type', 'button');
       cancelTaskButton.classList.add('close-button');
       const cancelSpan = document.createElement('span');
@@ -360,7 +368,7 @@ const AppController = () => {
    
    const createDeleteTaskButton = (listIndex, task) => {
       const deleteTaskButton = document.createElement('button');
-      deleteTaskButton.setAttribute('id', 'delete-task');
+      deleteTaskButton.classList.add('delete-task-button');
       deleteTaskButton.setAttribute('type', 'button');
       deleteTaskButton.textContent = 'Delete';
       deleteTaskButton.addEventListener('click', () => {
@@ -411,6 +419,7 @@ const AppController = () => {
                label.setAttribute('for', `${formId}IsImportant`);
                input.setAttribute('type', 'checkbox');
                input.setAttribute('id', `${formId}IsImportant`);
+               input.classList.add('form-checkbox');
                if (task) input.checked = task.isImportant;
                break;
          }
@@ -422,10 +431,10 @@ const AppController = () => {
    
       const formButtons = document.createElement('div');
       formButtons.classList.add('form-buttons');
+      formButtons.append(createSubmitTaskButton(formId, listIndex, task));
       if (task) {
          formButtons.append(createDeleteTaskButton(listIndex, task));
       }
-      formButtons.append(createSubmitTaskButton(formId, listIndex, task));
    
       taskForm.append(createCancelButton(formId));
       taskForm.append(form);

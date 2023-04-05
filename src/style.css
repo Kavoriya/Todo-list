@@ -70,13 +70,20 @@ body {
 }
 
 .task {
+   display: grid;
+   grid-template-rows: 40px 1fr;
    list-style: none;
    border-radius: 8px;
 }
 
+.task:hover {
+   background-color: #9da7ff;
+}
+
 .task-main {
+   grid-row: 1/2;
    display: grid;
-   grid-template-columns: 30px max-content 25px max-content 30px;
+   grid-template-columns: 30px max-content 25px 300px 30px;
    grid-template-rows: 40px;
    column-gap: 6px;
    justify-items: center;
@@ -85,7 +92,7 @@ body {
 }
 
 .task-main-dateless.task-main {
-   grid-template-columns: 30px 25px max-content 30px;
+   grid-template-columns: 30px 25px 300px 30px;
 }
 
 .task-date, .task-star, .task-title, .task-note {
@@ -112,6 +119,13 @@ body {
 .task-title {
    margin: 0;
    grid-column: 4/5;
+   width: 100%;
+   display: inline-block;
+   align-items: center;
+   gap: 20px;
+   overflow: hidden;
+   white-space: nowrap;
+   text-overflow: ellipsis;
 }
 
 .task-main-dateless.task-main > .task-title {
@@ -120,6 +134,20 @@ body {
 
 .note {
    margin: 5px;
+}
+
+.delete-task-button {
+   grid-row: 1/2;
+   background-color: transparent;
+   color: #ee3838;
+   border: none;
+   margin-left: auto;
+   cursor: pointer;
+   visibility: hidden;
+}
+
+.task:hover .delete-task-button {
+   visibility: visible;
 }
 
 .controls {
@@ -186,7 +214,7 @@ body {
    font-size: 0.7rem;
 }
 
-#isImportant, #listIsImportant, #editIsImportant {
+.form-checkbox {
    width: 1rem;
    height: 1rem;
    margin: 0;
@@ -202,7 +230,7 @@ body {
    padding-right: 40px;
 }
 
-#submit-task, #delete-task {
+#submit-task {
    border: none;
    padding: 12px;
    font-size: 1rem;
@@ -212,11 +240,6 @@ body {
 
 #submit-task {
    background-color: #7dd3fc;
-}
-
-#delete-task {
-   background-color: #fca5a5;
-   margin-left: auto;
 }
 
 .close-button {
