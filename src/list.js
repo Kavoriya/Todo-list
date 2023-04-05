@@ -1,8 +1,4 @@
-import { Task } from './task.js';
-
 export const List = (title, note, isDone, tasks) => {
-   const prototype = Task(title, note, dueDate, isImportant, isDone);
-
    const addTask = (task) => {
       if (task.title != '') {
          tasks.push(task);
@@ -25,5 +21,7 @@ export const List = (title, note, isDone, tasks) => {
       tasks = [];
    }
 
-   return Object.assign({}, prototype, {tasks}, {addTask, deleteTask, uncheckList, clearList});
+   let list = { title, note, isDone, tasks, addTask, deleteTask, uncheckList, clearList }
+
+   return list;
 }
