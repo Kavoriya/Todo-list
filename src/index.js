@@ -78,7 +78,17 @@ const AppController = () => {
       listHeader.classList.add('list-header');
       const listTitle = document.createElement('h2');
       listTitle.textContent = app.allLists[listIndex].title;
-      listHeader.append(listTitle);
+
+      const settingsButton = document.createElement('button');
+      settingsButton.setAttribute('type', 'button');
+      settingsButton.classList.add('settings-button');
+      const seetingsIcon = document.createElement('span');
+      seetingsIcon.classList.add('material-icons', 'settings-icon');
+      seetingsIcon.textContent = 'settings';
+
+      settingsButton.append(seetingsIcon);
+
+      listHeader.append(listTitle, settingsButton);
 
       const listTasks = document.createElement('div');
       listTasks.classList.add('list-tasks');
