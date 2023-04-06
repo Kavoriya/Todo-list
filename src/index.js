@@ -10,23 +10,16 @@ const AppController = () => {
       console.log(lists);
       if (!lists || !lists.length) {
          return [List(
-            'Todo List', '', '', false, false, []
+            'Todo List', '', false, []
          )];
       }
       let properLists = [];
       lists.forEach(list => {
          const properTasks = [];
          list.tasks.forEach(task => {
-            let fixedDate = '';
-            if (task.dueDate) {
-               fixedDate = new Date(task.dueDate);
-            } else {
-               fixedDate = '';
-            }
             properTasks.push(Task(
                task.title, 
-               task.note, 
-               fixedDate, 
+               task.note,
                task.isImportant, 
                task.isDone));
          })
@@ -34,8 +27,6 @@ const AppController = () => {
          push(List(
             list.title, 
             list.note, 
-            new Date(list.dueDate), 
-            list.isImportant, 
             list.isDone, 
             properTasks));
       })
@@ -44,8 +35,17 @@ const AppController = () => {
 
    const app = ListsController(getListsFromStorage());
 
-   const sidebar = document.getElementById('sidebar');
-   const listContent = document.getElementById('listContent');
+   const main = document.createElement('main');
+   main.setAttribute('id', 'app');
+
+   const sidebar = document.createElement('div');
+   sidebar.setAttribute('id', 'sidebar');
+
+   const listContent = document.createElement('div');
+   listContent.setAttribute('id', 'listContent');
+
+   main.append(sidebar, listContent);
+   document.querySelector('body').append(main);
 
    const loadListContent = (listIndex) => {
       window.localStorage.setItem('allLists', JSON.stringify(app.allLists));
@@ -78,21 +78,6 @@ const AppController = () => {
             loadListContent(listIndex);
          });
          taskMain.appendChild(checkbox);
-
-         if (task.dueDate) { 
-            console.log(task.dueDate);
-            const date = document.createElement('span');
-            date.classList.add('task-date');
-            let dayAndMonth = 
-            `${task.dueDate.getDate()}. ${task.dueDate.toLocaleString('default', {month: 'short'})}`;
-            date.textContent = dayAndMonth;
-            date.addEventListener('click', () => {
-               createFormForTask('editTaskForm', listIndex, task);
-            })
-            taskMain.appendChild(date);
-         } else {
-            taskMain.classList.add('task-main-dateless')
-         }
 
          if (task.isImportant) {
             const importantIcon = document.createElement('span');
@@ -248,24 +233,6 @@ const AppController = () => {
                input.setAttribute('type', 'text');
                input.setAttribute('id', 'listTitle');
                break;
-            case 1:
-               label.textContent = 'Due date';
-               label.setAttribute('for', 'listDate');
-               input.setAttribute('type', 'date');
-               input.setAttribute('id', 'listDate');
-               break;
-            case 2:
-               label.textContent = 'Note';
-               label.setAttribute('for', 'listNote');
-               input.setAttribute('type', 'text');
-               input.setAttribute('id', 'listNote');
-               break;
-            case 3:
-               label.textContent = 'Important';
-               label.setAttribute('for', 'listIsImportant');
-               input.setAttribute('type', 'checkbox');
-               input.setAttribute('id', 'listIsImportant');
-               break;
          }
          li.append(label, input);
          ul.append(li);
@@ -273,46 +240,20 @@ const AppController = () => {
       }
       form.append(ul);
       
-      const cancelListButton = document.createElement('button');
-      cancelListButton.setAttribute('id', 'cancel-task');
-      cancelListButton.setAttribute('type', 'button');
-      cancelListButton.classList.add('close-button');
-      const cancelSpan = document.createElement('span');
-      cancelSpan.classList.add('material-icons', 'md-36');
-      cancelSpan.textContent = 'close';
-      cancelListButton.append(cancelSpan);
-      cancelListButton.addEventListener('click', () => {
-         document.getElementById('addListForm').remove();
-      })
-   
       const submitListButton = document.createElement('button');
       submitListButton.setAttribute('id', 'submit-task');
       submitListButton.setAttribute('type', 'button');
       submitListButton.textContent = 'Submit';
       submitListButton.addEventListener('click', () => {
          const title = document.getElementById('listTitle').value;
-         // const date = document.getElementById('listDate').value;
-         // let dueDate;
-         // if (date != '') {
-         //    dueDate = new Date(date);
-         // } else {
-         //    dueDate = '';
-         // }
-      
-         // const note = document.getElementById('listNote').value;
-         // const isImportant = document.getElementById('listIsImportant').checked;
          console.log('title:' + title);
-         // console.log('date:' + date);
-         // console.log('dueDate:' + dueDate);
-         // console.log('note:' + note);
-         // console.log('isImportant:' + isImportant);
-         app.addList(List(title, '', '', false, false, []));
+         app.addList(List(title, '', false, []));
          loadListContent(app.allLists.length - 1);
          updateSidebar();
          
       })
    
-      addListForm.append(cancelListButton);
+      addListForm.append(createCancelButton());
       form.append(submitListButton);
       addListForm.append(form);
       sidebar.append(addListForm);
@@ -320,7 +261,6 @@ const AppController = () => {
    
    const createCancelButton = (formId) => {
       const cancelTaskButton = document.createElement('button');
-      // cancelTaskButton.setAttribute('id', 'cancel-task');
       cancelTaskButton.setAttribute('type', 'button');
       cancelTaskButton.classList.add('close-button');
       const cancelSpan = document.createElement('span');
@@ -341,24 +281,15 @@ const AppController = () => {
       submitTaskButton.addEventListener('click', () => {
          console.log(`${formId}Title`);
          const title = document.getElementById(`${formId}Title`).value;
-         const date = document.getElementById(`${formId}DueDate`).value;
-         let dueDate;
-         if (date) {
-            dueDate = new Date(date);
-         } else {
-            dueDate = '';
-         }
          const note = document.getElementById(`${formId}Note`).value;
          const isImportant = document.getElementById(`${formId}IsImportant`).checked;
          console.log('title:' + title);
-         console.log('date:' + date);
-         console.log('dueDate:' + dueDate);
          console.log('note:' + note);
          console.log('isImportant:' + isImportant);
          if (!task) {
-            app.allLists[listIndex].addTask(Task(title, note, dueDate, isImportant, false));
+            app.allLists[listIndex].addTask(Task(title, note, isImportant, false));
          } else {
-            task.editTask(title, note, dueDate, isImportant);
+            task.editTask(title, note, isImportant);
          }
          loadListContent(listIndex);   
       });
@@ -386,7 +317,7 @@ const AppController = () => {
       const form = document.createElement('form');
       const ul = document.createElement('ul');
    
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 3; i++) {
          const li = document.createElement('li');
          const label = document.createElement('label');
          const input = document.createElement('input');
@@ -399,22 +330,13 @@ const AppController = () => {
                if (task) input.value = task.title;
                break;
             case 1:
-               label.textContent = 'Due date';
-               label.setAttribute('for', `${formId}DueDate`);
-               input.setAttribute('type', 'date');
-               input.setAttribute('id', `${formId}DueDate`);
-               if (task) {
-                  if (task.dueDate) input.valueAsDate = task.dueDate; 
-               }  
-               break;
-            case 2:
                label.textContent = 'Note';
                label.setAttribute('for', `${formId}Note`);
                input.setAttribute('type', 'text');
                input.setAttribute('id', `${formId}Note`);
                if (task) input.value = task.note;
                break;
-            case 3:
+            case 2:
                label.textContent = 'Important';
                label.setAttribute('for', `${formId}IsImportant`);
                input.setAttribute('type', 'checkbox');
