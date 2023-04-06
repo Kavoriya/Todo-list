@@ -44,7 +44,30 @@ const AppController = () => {
    const listContent = document.createElement('div');
    listContent.setAttribute('id', 'listContent');
 
-   main.append(sidebar, listContent);
+   const rudder = document.createElement('div');
+   rudder.setAttribute('id', 'rudder');
+
+   const listsButton = document.createElement('button');
+   listsButton.setAttribute('type', 'button');
+   listsButton.classList.add('rudder-button-lists', 'rudder-button');
+   listsButton.textContent = 'Lists';
+   listsButton.addEventListener('click', () => {
+      main.textContent = '';
+      main.append(sidebar, rudder);
+   })
+
+   const tasksButton = document.createElement('button');
+   tasksButton.setAttribute('type', 'button');
+   tasksButton.classList.add('rudder-button-tasks', 'rudder-button');
+   tasksButton.textContent = 'Tasks';
+   tasksButton.addEventListener('click', () => {
+      main.textContent = '';
+      main.append(listContent, rudder);
+   })
+
+   rudder.append(listsButton, tasksButton);
+
+   main.append(listContent, rudder);
    document.querySelector('body').append(main);
 
    const loadListContent = (listIndex) => {
@@ -142,7 +165,7 @@ const AppController = () => {
       controls.append
       (
          createNewTaskButton(listIndex), 
-         createDeleteListButton(listIndex)
+         // createDeleteListButton(listIndex)
       );
       listContent.append(controls);
    }
@@ -181,7 +204,7 @@ const AppController = () => {
       newTaskButton.setAttribute('id', 'newTaskButton');
       newTaskButton.classList.add('controls-button');
       newTaskButton.setAttribute('type', 'button');
-      newTaskButton.textContent = 'New Task';
+      newTaskButton.textContent = '+';
       newTaskButton.addEventListener('click', () => {
          // createFormForNewTask(listIndex)
          createFormForTask('addTaskForm', listIndex);
@@ -194,7 +217,7 @@ const AppController = () => {
       newListButton.setAttribute('id', 'newListButton');
       newListButton.classList.add('controls-button');
       newListButton.setAttribute('type', 'button');
-      newListButton.textContent = 'New List';
+      newListButton.textContent = '+';
       newListButton.addEventListener('click', () => {
          createFormForNewList();
       })

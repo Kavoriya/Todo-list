@@ -9,12 +9,16 @@ body {
 }
 
 #app {
-   width: 1000px;
-   height: 100vh;
+   width: 400px;
+   height: 700px;
    max-height: 100vh;
    margin: 0 auto;
    display: grid;
-   grid-template-columns: 300px 1fr;
+   grid-template-rows: 1fr 60px;
+}
+
+#rudder {
+   background-color: #012536;
 }
 
 #sidebar {
@@ -45,7 +49,7 @@ body {
 
 #listContent {
    display: grid;
-   grid-template-rows: 100px 1fr 50px;
+   grid-template-rows: 100px 1fr;
    border-left: 1px solid black;
    border-right: 1px solid black;
    position: relative;
@@ -151,7 +155,9 @@ body {
 }
 
 .controls {
-   background-color: #262626;
+   position: absolute;
+   right: 20px;
+   bottom: 100px;
 }
 
 #listContent > .controls {
@@ -160,10 +166,12 @@ body {
 }
 
 .controls-button {
-  width: 200px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border: none;
-  font-size: 1rem;
+  border-radius: 50%;
+  font-size: 2rem;
+  box-shadow: 0 1px 5px 0 black;
   color: white;
   cursor: pointer;
 }
