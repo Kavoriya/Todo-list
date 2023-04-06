@@ -45,6 +45,8 @@ body {
 
 #listContent {
    display: grid;
+   max-height: 100%;
+   overflow: scroll;
    grid-template-rows: 60px 1fr;
    position: relative;
    background-color: #eff6ff;
@@ -92,7 +94,7 @@ body {
 .task-main {
    grid-row: 1/2;
    display: grid;
-   grid-template-columns: 30px 25px minmax(100px, 1fr) 30px;
+   grid-template-columns: 30px 25px minmax(100px, 1fr);
    grid-template-rows: 40px;
    column-gap: 6px;
    justify-items: center;

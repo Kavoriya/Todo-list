@@ -130,16 +130,6 @@ const AppController = () => {
          })
          taskMain.appendChild(title);
 
-         if (task.note != '') {
-            const noteIcon = document.createElement('span');
-            noteIcon.classList.add('material-icons', 'task-note');
-            noteIcon.textContent = 'description';
-            noteIcon.addEventListener('click', () => {
-               handleClickOnNoteIcon(li, task);
-            })
-            taskMain.appendChild(noteIcon);
-         }
-
          const deleteTaskButton = createDeleteTaskButton(listIndex, task);
          deleteTaskButton.textContent = '';
          const deleteTaskButtonSpan = document.createElement('span');
@@ -147,8 +137,15 @@ const AppController = () => {
          deleteTaskButtonSpan.textContent = 'delete';
          deleteTaskButton.append(deleteTaskButtonSpan);
          
-
          li.append(taskMain, deleteTaskButton);
+
+         if (task.note != '') {
+            const note = document.createElement('p');
+            note.classList.add('note');
+            note.textContent = task.note;
+            li.appendChild(note);
+         }
+
          listTasks.append(li);
       })
 
