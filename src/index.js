@@ -253,7 +253,7 @@ const AppController = () => {
          
       })
    
-      addListForm.append(createCancelButton());
+      addListForm.append(createCancelButton('addListForm'));
       form.append(submitListButton);
       addListForm.append(form);
       sidebar.append(addListForm);
