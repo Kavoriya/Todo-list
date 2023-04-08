@@ -82,9 +82,11 @@ body {
 
 .task {
    display: grid;
+   grid-template-columns: 1fr 50px;
    grid-template-rows: 40px 1fr;
    list-style: none;
    border-radius: 8px;
+   padding: 6px;
 }
 
 .task:hover {
@@ -94,7 +96,7 @@ body {
 .task-main {
    grid-row: 1/2;
    display: grid;
-   grid-template-columns: 30px 25px minmax(100px, 1fr);
+   grid-template-columns: 40px 25px minmax(100px, 1fr);
    grid-template-rows: 40px;
    column-gap: 6px;
    justify-items: center;
@@ -136,6 +138,21 @@ body {
    margin: 5px;
 }
 
+.task-settings-button {
+   grid-row: 1/3;
+   align-self: center;
+   background-color: transparent;
+   border: none;
+   border-radius: 50%;
+   width: 40px;
+   height: 40px;
+}
+
+.task-settings-button:active {
+   background-color: white;
+   border: none;
+}
+
 .delete-task-button {
    grid-row: 1/2;
    background-color: transparent;
@@ -146,9 +163,6 @@ body {
    visibility: hidden;
 }
 
-.task:hover .delete-task-button {
-   visibility: visible;
-}
 
 .controls {
    position: absolute;

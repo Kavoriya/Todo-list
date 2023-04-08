@@ -130,14 +130,14 @@ const AppController = () => {
          })
          taskMain.appendChild(title);
 
-         const deleteTaskButton = createDeleteTaskButton(listIndex, task);
-         deleteTaskButton.textContent = '';
-         const deleteTaskButtonSpan = document.createElement('span');
-         deleteTaskButtonSpan.classList.add('material-icons', 'md-36');
-         deleteTaskButtonSpan.textContent = 'delete';
-         deleteTaskButton.append(deleteTaskButtonSpan);
+         const taskSetttingsButton = document.createElement('button');
+         taskSetttingsButton.classList.add('task-settings-button');
+         const taskSetttingsIcon = document.createElement('span');
+         taskSetttingsIcon.classList.add('material-icons', 'task-settings-icon');
+         taskSetttingsIcon.textContent = 'more_vert';
+         taskSetttingsButton.append(taskSetttingsIcon);
          
-         li.append(taskMain, deleteTaskButton);
+         li.append(taskMain, taskSetttingsButton);
 
          if (task.note != '') {
             const note = document.createElement('p');
