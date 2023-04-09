@@ -135,6 +135,9 @@ const AppController = () => {
          const taskSetttingsIcon = document.createElement('span');
          taskSetttingsIcon.classList.add('material-icons', 'task-settings-icon');
          taskSetttingsIcon.textContent = 'more_vert';
+         taskSetttingsButton.addEventListener('click', () => {
+            handleClickOnTaskSettings(listIndex, task);
+         })
          taskSetttingsButton.append(taskSetttingsIcon);
          
          li.append(taskMain, taskSetttingsButton);
@@ -404,6 +407,39 @@ const AppController = () => {
       if (document.getElementById('addListForm')) {
          document.getElementById('addListForm').remove();
       }
+   }
+
+   const createPopUpMenu = () => {
+      if (document.getElementById('popUpMenu')) {
+         document.getElementById('popUpMenu').remove();
+      }
+      const popUpMenu = document.createElement('div');
+      popUpMenu.setAttribute('id', 'popUpMenu')
+      const cancelButton = createCancelButton('popUpMenu');
+      popUpMenu.append(cancelButton);
+
+      return popUpMenu;
+   }
+   const handleClickOnTaskSettings = (listIndex, task) => {
+      const taskTitle = document.createElement('p');
+      taskTitle.textContent = task.title;
+
+      const listOfOptions = document.createElement('ul');
+
+      const editTaskOption = document.createElement('li');
+      const editTaskButton = document.createElement('button');
+      editTaskButton.setAttribute('type', 'button');
+      editTaskOption.append(editTaskButton);
+
+      const deleteTaskOption = document.createElement('li');
+      const deleteTaskButton = document.createElement('button');
+      deleteTaskButton.setAttribute('type', 'button');
+      deleteTaskOption.append(deleteTaskButton);
+
+      listOfOptions.append(editTaskOption, deleteTaskOption);
+      const popUpMenu = createPopUpMenu();
+      popUpMenu.append(listOfOptions);
+      main.append(popUpMenu);
    }
 
    updateSidebar();
