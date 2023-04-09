@@ -277,7 +277,9 @@ const AppController = () => {
       newListButton.setAttribute('type', 'button');
       newListButton.textContent = '+';
       newListButton.addEventListener('click', () => {
-         createFormForNewList();
+         const popUpMenu = createPopUpMenu('New list');
+         popUpMenu.append(createFormForNewList());
+         main.append(popUpMenu);
       })
       return newListButton;
    }
@@ -303,6 +305,7 @@ const AppController = () => {
       addListForm.classList.add('form');
       const form = document.createElement('form');
       const ul = document.createElement('ul');
+
       for (let i = 0; i < 1; i++) {
          const li = document.createElement('li');
          const label = document.createElement('label');
@@ -331,13 +334,12 @@ const AppController = () => {
          app.addList(List(title, '', false, []));
          loadListContent(app.allLists.length - 1);
          updateSidebar();
-         
+         closePopUpMenu();
       })
    
-      addListForm.append(createCancelButton('addListForm'));
-      form.append(submitListButton);
       addListForm.append(form);
-      sidebar.append(addListForm);
+      addListForm.append(submitListButton);
+      return addListForm;
    }
    
    const createCancelButton = (formId) => {
