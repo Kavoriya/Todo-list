@@ -57,6 +57,7 @@ const AppController = () => {
    })
 
    const tasksButton = document.createElement('button');
+   tasksButton.disabled = true;
    tasksButton.setAttribute('type', 'button');
    tasksButton.classList.add('rudder-button-tasks', 'rudder-button');
    tasksButton.textContent = 'Tasks';
