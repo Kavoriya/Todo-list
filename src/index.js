@@ -324,6 +324,7 @@ const AppController = () => {
          } else {
             task.editTask(title, note, isImportant);
          }
+         closePopUpMenu();
          loadListContent(listIndex);   
       });
    
@@ -387,14 +388,10 @@ const AppController = () => {
       const formButtons = document.createElement('div');
       formButtons.classList.add('form-buttons');
       formButtons.append(createSubmitTaskButton(formId, listIndex, task));
-      if (task) {
-         formButtons.append(createDeleteTaskButton(listIndex, task));
-      }
    
-      taskForm.append(createCancelButton(formId));
       taskForm.append(form);
       taskForm.append(formButtons);
-      listContent.append(taskForm);
+      return taskForm;
    }
    
    const closeAllForms = () => {
@@ -443,6 +440,11 @@ const AppController = () => {
       const editTaskButton = createPopUpMenuButton();
       editTaskButton.classList.add('edit-task-button');
       editTaskButton.textContent = 'Edit task';
+      editTaskButton.addEventListener('click', () => {
+         const popUpMenu = createPopUpMenu();
+         popUpMenu.append(createFormForTask('editTask', listIndex, task));
+         main.append(popUpMenu);
+      });
       editTaskOption.append(editTaskButton);
 
       const deleteTaskOption = document.createElement('li');

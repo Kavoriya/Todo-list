@@ -203,11 +203,8 @@ body {
 }
 
 .form {
-   position: absolute;
-   bottom: 50px;
-   background-color: #e6eaff;;
-   padding: 0 0 24px 24px;
-   z-index: 99;
+   color: white;
+   padding: 0 30px;
 }
 
 .form ul {
@@ -216,8 +213,8 @@ body {
    justify-items: center;
    gap: 10px;
    list-style: none;
-   padding: 0 40px 12px 0;
-   margin: 0;
+   padding: 0;
+   margin: 0 0 20px 0;
 }
 
 .form ul li {
@@ -228,16 +225,17 @@ body {
 .form ul li label {
    display: block;
    height: inherit;
-   width: 110px;
+   min-width: 110px;
 }
 
 .form ul li input {
-   height: 1rem;
-   font-size: 0.7rem;
+   height: 1.2rem;
+   width: 100%;
+   font-size: 0.9rem;
 }
 
-.form-checkbox {
-   width: 1rem;
+.form ul li .form-checkbox {
+   width: 1rem; 
    height: 1rem;
    margin: 0;
 }
