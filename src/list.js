@@ -18,7 +18,7 @@ export const List = (title, note, isDone, tasks) => {
    }
 
    const clearList = () => {
-      tasks = [];
+      tasks.length = 0;
    }
 
    let list = { title, note, isDone, tasks, addTask, deleteTask, uncheckList, clearList }

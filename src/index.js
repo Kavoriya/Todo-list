@@ -81,10 +81,57 @@ const AppController = () => {
 
       const settingsButton = document.createElement('button');
       settingsButton.setAttribute('type', 'button');
-      settingsButton.classList.add('settings-button');
+      settingsButton.classList.add('list-settings-button');
       const seetingsIcon = document.createElement('span');
-      seetingsIcon.classList.add('material-icons', 'settings-icon');
+      seetingsIcon.classList.add('material-icons', 'list-settings-icon');
       seetingsIcon.textContent = 'settings';
+
+      settingsButton.addEventListener('click', () => {
+         const popUpMenu = createPopUpMenu(app.allLists[listIndex].title);
+         const listOfOptions = document.createElement('ul');
+
+         const uncheckListOption = document.createElement('li');
+         const uncheckListButton = createPopUpMenuButton();
+         uncheckListButton.textContent = 'Uncheck all tasks';
+         uncheckListButton.addEventListener('click', () => {
+            app.allLists[listIndex].uncheckList();
+            loadListContent(listIndex);
+            closePopUpMenu();
+         });
+         uncheckListOption.append(uncheckListButton);
+
+         const deleteAllTasksOption = document.createElement('li');
+         const deleteAllTasksButton = createPopUpMenuButton();
+         deleteAllTasksButton.textContent = 'Delete all tasks';
+         deleteAllTasksButton.addEventListener('click', () => {
+            app.allLists[listIndex].clearList();
+            loadListContent(listIndex);
+            closePopUpMenu();
+         });
+         deleteAllTasksOption.append(deleteAllTasksButton);
+
+         const deleteListOption = document.createElement('li');
+         const deleteListButton = createPopUpMenuButton();
+         deleteListButton.textContent = 'Delete this list';
+         deleteListButton.addEventListener('click', () => {
+            app.allLists.splice(listIndex, 1);
+            updateSidebar();
+            closePopUpMenu();
+            main.textContent = '';
+            main.append(sidebar, rudder);
+            if (app.allLists.length == 0) {
+               tasksButton.disabled = true;
+            }
+         });
+         deleteListOption.append(deleteListButton);
+
+         listOfOptions.append(
+            uncheckListOption, 
+            deleteAllTasksOption, 
+            deleteListOption);
+         popUpMenu.append(listOfOptions);
+         main.append(popUpMenu);
+      })
 
       settingsButton.append(seetingsIcon);
 
