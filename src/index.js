@@ -216,8 +216,9 @@ const AppController = () => {
       newTaskButton.setAttribute('type', 'button');
       newTaskButton.textContent = '+';
       newTaskButton.addEventListener('click', () => {
-         // createFormForNewTask(listIndex)
-         createFormForTask('addTaskForm', listIndex);
+         const popUpMenu = createPopUpMenu('New task');
+         popUpMenu.append(createFormForTask('addTask', listIndex));
+         main.append(popUpMenu);
       });
       return newTaskButton;
    }
