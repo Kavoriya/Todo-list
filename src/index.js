@@ -52,6 +52,7 @@ const AppController = () => {
    listsButton.classList.add('rudder-button-lists', 'rudder-button');
    listsButton.textContent = 'Lists';
    listsButton.addEventListener('click', () => {
+      tasksButton.disabled = false;
       main.textContent = '';
       main.append(sidebar, rudder);
    })
@@ -516,9 +517,9 @@ const AppController = () => {
    }
 
    updateSidebar();
-   // loadListContent(0);
+   loadListContent(0);
    main.textContent = '';
-   main.append(sidebar, rudder);
+   main.append(listContent, rudder);
 }
 
 AppController();
