@@ -92,7 +92,7 @@ const AppController = () => {
 
          const uncheckListOption = document.createElement('li');
          const uncheckListButton = createPopUpMenuButton();
-         uncheckListButton.textContent = 'Uncheck all tasks';
+         uncheckListButton.textContent = 'Uncheck all tasks in this list';
          uncheckListButton.addEventListener('click', () => {
             app.allLists[listIndex].uncheckList();
             loadListContent(listIndex);
@@ -102,7 +102,8 @@ const AppController = () => {
 
          const deleteAllTasksOption = document.createElement('li');
          const deleteAllTasksButton = createPopUpMenuButton();
-         deleteAllTasksButton.textContent = 'Delete all tasks';
+         deleteAllTasksButton.classList.add('red-button');
+         deleteAllTasksButton.textContent = 'Delete all tasks in this list';
          deleteAllTasksButton.addEventListener('click', () => {
             app.allLists[listIndex].clearList();
             loadListContent(listIndex);
@@ -112,6 +113,7 @@ const AppController = () => {
 
          const deleteListOption = document.createElement('li');
          const deleteListButton = createPopUpMenuButton();
+         deleteListButton.classList.add('red-button');
          deleteListButton.textContent = 'Delete this list';
          deleteListButton.addEventListener('click', () => {
             app.allLists.splice(listIndex, 1);
@@ -119,9 +121,9 @@ const AppController = () => {
             closePopUpMenu();
             main.textContent = '';
             main.append(sidebar, rudder);
-            if (app.allLists.length == 0) {
-               tasksButton.disabled = true;
-            }
+            
+            tasksButton.disabled = true;
+            
          });
          deleteListOption.append(deleteListButton);
 
@@ -235,7 +237,10 @@ const AppController = () => {
       app.allLists.forEach(list => {
          const li = document.createElement('li');
          li.addEventListener('click', () => {
+            main.textContent = '';
+            main.append(listContent, rudder);
             loadListContent(app.allLists.indexOf(list));
+            tasksButton.disabled = false;
          });
          li.textContent = list.title;
          lists.append(li);
@@ -499,7 +504,7 @@ const AppController = () => {
 
       const deleteTaskOption = document.createElement('li');
       const deleteTaskButton = createPopUpMenuButton();
-      deleteTaskButton.classList.add('delete-task-button');
+      deleteTaskButton.classList.add('red-button');
       deleteTaskButton.textContent = 'Delete task';
       makeButtonDeleteTask(deleteTaskButton, listIndex, task);
       deleteTaskOption.append(deleteTaskButton);
@@ -510,7 +515,9 @@ const AppController = () => {
    }
 
    updateSidebar();
-   loadListContent(0);
+   // loadListContent(0);
+   main.textContent = '';
+   main.append(sidebar, rudder);
 }
 
 AppController();
