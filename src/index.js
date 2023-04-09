@@ -329,17 +329,17 @@ const AppController = () => {
    
       return submitTaskButton;
    }
+
+   const makeButtonEditTask = (listIndex, task) => {
+
+   }
    
-   const createDeleteTaskButton = (listIndex, task) => {
-      const deleteTaskButton = document.createElement('button');
-      deleteTaskButton.classList.add('delete-task-button');
-      deleteTaskButton.setAttribute('type', 'button');
-      deleteTaskButton.textContent = 'Delete';
-      deleteTaskButton.addEventListener('click', () => {
+   const makeButtonDeleteTask = (button, listIndex, task) => {
+      button.addEventListener('click', () => {
          app.allLists[listIndex].deleteTask(task);
-         loadListContent(listIndex); 
+         loadListContent(listIndex);
+         closePopUpMenu();
       })
-      return deleteTaskButton;
    }
    
    const createFormForTask = (formId, listIndex, task) => {
@@ -409,35 +409,50 @@ const AppController = () => {
       }
    }
 
-   const createPopUpMenu = () => {
+   const createPopUpMenuButton = () => {
+      const popUpMenuButton = document.createElement('button');
+      popUpMenuButton.classList.add('pop-up-menu-button');
+      popUpMenuButton.setAttribute('type', 'button');
+      return popUpMenuButton;
+   }
+
+   const createPopUpMenu = (menuTitle) => {
       if (document.getElementById('popUpMenu')) {
-         document.getElementById('popUpMenu').remove();
+         closePopUpMenu();
       }
       const popUpMenu = document.createElement('div');
       popUpMenu.setAttribute('id', 'popUpMenu')
       const cancelButton = createCancelButton('popUpMenu');
       popUpMenu.append(cancelButton);
-
+      const title = document.createElement('div');
+      title.classList.add('item-title');
+      title.textContent = menuTitle;
+      popUpMenu.append(title);
       return popUpMenu;
    }
-   const handleClickOnTaskSettings = (listIndex, task) => {
-      const taskTitle = document.createElement('p');
-      taskTitle.textContent = task.title;
 
+   const closePopUpMenu = () => {
+      document.getElementById('popUpMenu').remove();
+   }
+   
+   const handleClickOnTaskSettings = (listIndex, task) => {
+      const popUpMenu = createPopUpMenu(task.title);
       const listOfOptions = document.createElement('ul');
 
       const editTaskOption = document.createElement('li');
-      const editTaskButton = document.createElement('button');
-      editTaskButton.setAttribute('type', 'button');
+      const editTaskButton = createPopUpMenuButton();
+      editTaskButton.classList.add('edit-task-button');
+      editTaskButton.textContent = 'Edit task';
       editTaskOption.append(editTaskButton);
 
       const deleteTaskOption = document.createElement('li');
-      const deleteTaskButton = document.createElement('button');
-      deleteTaskButton.setAttribute('type', 'button');
+      const deleteTaskButton = createPopUpMenuButton();
+      deleteTaskButton.classList.add('delete-task-button');
+      deleteTaskButton.textContent = 'Delete task';
+      makeButtonDeleteTask(deleteTaskButton, listIndex, task);
       deleteTaskOption.append(deleteTaskButton);
 
       listOfOptions.append(editTaskOption, deleteTaskOption);
-      const popUpMenu = createPopUpMenu();
       popUpMenu.append(listOfOptions);
       main.append(popUpMenu);
    }

@@ -168,17 +168,6 @@ body {
    border: none;
 }
 
-.delete-task-button {
-   grid-row: 1/2;
-   background-color: transparent;
-   color: #ee3838;
-   border: none;
-   margin-left: auto;
-   cursor: pointer;
-   visibility: hidden;
-}
-
-
 .controls {
    position: absolute;
    right: 0;
@@ -287,9 +276,48 @@ body {
 }
 
 #popUpMenu {
+   display: grid;
+   grid-template-rows: 50px 50px 1fr;
    position: absolute;
    bottom: 0;
    width: 100%;
-   height: 200px;
+   height: 300px;
    background-color: #012536;
+}
+
+#popUpMenu .item-title {
+   text-align: center;
+   color: white;
+   margin: 0 0 20px 0;
+   font-size: 1.5rem;
+}
+
+#popUpMenu > ul {
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+   gap: 10px;
+   list-style: none;
+   padding: 0 20px 20px 20px;
+   margin: 0;
+}
+
+.pop-up-menu-button {
+   background-color: #012536;
+   color: white;
+   border: 2px solid white;
+   border-radius: 6px;
+   font-size: 1rem;
+   padding: 12px;
+   width: 100%;
+}
+
+.pop-up-menu-button.delete-task-button {
+   color: #eb0000;
+   border: 2px solid #eb0000;
+}
+
+.pop-up-menu-button.delete-task-button:hover {
+   color: #ffffff;
+   background-color: #eb0000;
 }
