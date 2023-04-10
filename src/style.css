@@ -2,16 +2,18 @@ html {
    margin: 0;
    font-size: 20px;
    box-sizing: border-box;
+   height: 100%;
 }
 
 body {
    margin: 0;
+   height: 100%;
 }
 
 #app {
    width: 100vw;
    min-width: 350px;
-   height: 100vh;
+   height: 100%;
    margin: 0 auto;
    display: grid;
    grid-template-rows: 1fr 60px;
