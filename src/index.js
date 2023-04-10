@@ -1,7 +1,7 @@
 import { Task } from "./task.js";
 import { List } from "./list.js";
 import { ListsController } from "./listsController.js";
-// import './style.css';
+import './style.css';
 
 
 const AppController = () => {
@@ -83,6 +83,7 @@ const AppController = () => {
 
       const settingsButton = document.createElement('button');
       settingsButton.setAttribute('type', 'button');
+      settingsButton.setAttribute('id', 'settingsButton');
       settingsButton.classList.add('list-settings-button');
       const seetingsIcon = document.createElement('span');
       seetingsIcon.classList.add('material-icons', 'list-settings-icon');

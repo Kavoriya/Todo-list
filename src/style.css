@@ -54,11 +54,15 @@ body {
    display: grid;
    grid-auto-rows: 60px;
    overflow-y: auto;
+   padding: 0 20px;
 }
 
 .lists > li {
+   display: flex;
+   align-items: center;
    cursor: pointer;
-   padding: 16px;
+   font-size: 1.5rem;
+   font-weight: 600;
 }
 
 .lists > li:hover {
