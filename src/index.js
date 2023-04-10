@@ -359,7 +359,7 @@ const AppController = () => {
       cancelSpan.textContent = 'close';
       cancelTaskButton.append(cancelSpan);
       cancelTaskButton.addEventListener('click', () => {
-         document.getElementById(formId).remove();
+         closePopUpMenu();
       })
       return cancelTaskButton;
    }
@@ -488,6 +488,7 @@ const AppController = () => {
 
    const closePopUpMenu = () => {
       document.getElementById('popUpMenu').remove();
+      clickCount = 0;
    }
    
    const handleClickOnTaskSettings = (listIndex, task) => {
@@ -521,6 +522,20 @@ const AppController = () => {
    loadListContent(0);
    main.textContent = '';
    main.append(listContent, rudder);
+   let clickCount = 0;
+   document.addEventListener('click', (event) => {
+      let target = event.target;
+      if (document.getElementById('popUpMenu')) {
+         clickCount++;
+         console.log(clickCount);
+         if (!document.getElementById('popUpMenu').contains(target)) {
+            if (clickCount > 1) {
+               closePopUpMenu();
+               clickCount = 0;
+            }
+         }
+      }
+   })
 }
 
 AppController();
