@@ -99,9 +99,14 @@ body {
 .list-header .list-settings-button {
    background-color: transparent;
    border: none;
+   border-radius: 50%;
    padding: 6px;
    margin-left: auto;
    margin-right: 20px;
+}
+
+.list-header .list-settings-button:active {
+   background-color: white;
 }
 
 .list-tasks {
